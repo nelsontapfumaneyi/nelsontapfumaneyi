@@ -9,7 +9,7 @@
 2. **Since January 2025, ZiG term deposits have beaten US dollars; savings accounts have not.** The best 3-month deposit rate earned **+16.1%** in US-dollar terms over 21 months. In 2026 it beat the US Treasury bill by **4.4 points a year**, while ZiG savings trailed it by **3.6 points**.
 3. **Converting US dollars into ZiG pays only on long holds.** Someone who already earns ZiG needs about **6.9%** a year to match the Treasury bill. Someone who converts US dollars in and back out pays a 4.9% round trip, so needs **12.4%** for a one-year hold and **30.5%** for three months.
 
-Full write-up: [Business Requirements Document](docs/BRD.md) (requirements, KPI definitions, data lineage, risks, recommendations, acceptance criteria).
+Full write-up: [Research report](docs/research-report.md) (questions, data, method, four findings with charts, implications, limitations, sources) and the [Business Requirements Document](docs/BRD.md) (requirements, KPI definitions, data lineage, risks, recommendations, acceptance criteria).
 
 ## What is in this repository
 
@@ -22,7 +22,7 @@ Full write-up: [Business Requirements Document](docs/BRD.md) (requirements, KPI 
 | `clean/` | Cleaned source data: RBZ daily rates, IMF rates, RBZ deposit rates, ZIMSTAT CPI, FRED benchmarks, RBZ events, plus reconciliation files |
 | `sql/` | PostgreSQL 18 schema (temporal keys, constraints), load scripts, 34 validation checks and 6 negative tests, analysis extract |
 | `scripts/` | Python: fetch the source files, clean them, run the analysis, prepare the BI data, and generate the Power BI and Tableau files |
-| `docs/` | The research brief, one hand-off pack per pipeline stage, and the BRD |
+| `docs/` | The research report (with its charts in `docs/img/`), the research brief, one hand-off pack per pipeline stage, and the BRD |
 
 ## Method
 
