@@ -1,0 +1,73 @@
+table findings
+	lineageTag: 130fbf77-ad10-e762-44a1-2a185262cc21
+
+	column row_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 7bf3da15-bb7c-8479-261d-f6d0a240bba2
+		summarizeBy: none
+		sourceColumn: row_id
+
+		annotation SummarizationSetBy = User
+
+	column question_id
+		dataType: string
+		lineageTag: 0e308c3a-4bc7-caa0-30c9-ec1560f73695
+		summarizeBy: none
+		sourceColumn: question_id
+
+		annotation SummarizationSetBy = User
+
+	column finding
+		dataType: string
+		lineageTag: d9e5bb4e-0899-c5f0-a85b-800dac9f47f5
+		summarizeBy: none
+		sourceColumn: finding
+
+		annotation SummarizationSetBy = User
+
+	column number
+		dataType: double
+		formatString: 0.00
+		lineageTag: a6270636-5b8c-8e20-c268-55bc6b9edabf
+		summarizeBy: none
+		sourceColumn: number
+
+		annotation SummarizationSetBy = User
+
+	column unit
+		dataType: string
+		lineageTag: 0ae384a5-cfe7-f78f-03da-eded15d09510
+		summarizeBy: none
+		sourceColumn: unit
+
+		annotation SummarizationSetBy = User
+
+	column confidence
+		dataType: string
+		lineageTag: 7cca8995-3148-ee26-0322-5f0212072405
+		summarizeBy: none
+		sourceColumn: confidence
+
+		annotation SummarizationSetBy = User
+
+	column limits
+		dataType: string
+		lineageTag: 4668cafc-bf6e-f5df-fdbb-083244513f06
+		summarizeBy: none
+		sourceColumn: limits
+
+		annotation SummarizationSetBy = User
+
+	partition findings = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "findings.csv"),[Delimiter=",", Columns=7, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"row_id", Int64.Type}, {"question_id", type text}, {"finding", type text}, {"number", type number}, {"unit", type text}, {"confidence", type text}, {"limits", type text}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

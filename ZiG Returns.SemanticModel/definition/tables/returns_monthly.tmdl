@@ -1,0 +1,146 @@
+table returns_monthly
+	lineageTag: 4b18f781-7b6b-820c-6c48-15fa75d50a5c
+
+	column question_id
+		dataType: string
+		lineageTag: 1770b91e-77b3-af2c-8651-942136a0229f
+		summarizeBy: none
+		sourceColumn: question_id
+
+		annotation SummarizationSetBy = User
+
+	column period
+		dataType: string
+		lineageTag: 017ccec7-b0f2-a8cf-c0a3-8bdf61ff5160
+		summarizeBy: none
+		sourceColumn: period
+
+		annotation SummarizationSetBy = User
+
+	column period_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 5b0aa431-6ff6-09be-ec20-6a3fc065ee86
+		summarizeBy: none
+		sourceColumn: period_date
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column instrument
+		dataType: string
+		lineageTag: 6707cfb7-678e-bdf3-efd1-7a45e6b4df4e
+		summarizeBy: none
+		sourceColumn: instrument
+
+		annotation SummarizationSetBy = User
+
+	column currency_held
+		dataType: string
+		lineageTag: 4a82f7ca-acd5-e75f-31ec-a4f8a83d987e
+		summarizeBy: none
+		sourceColumn: currency_held
+
+		annotation SummarizationSetBy = User
+
+	column days
+		dataType: int64
+		formatString: 0
+		lineageTag: 79b466fb-6888-e60a-4ecb-8a3ad6d99ea0
+		summarizeBy: none
+		sourceColumn: days
+
+		annotation SummarizationSetBy = User
+
+	column partial_month
+		dataType: boolean
+		lineageTag: 85e39bf7-5002-1577-1a4a-c8ac0af45179
+		summarizeBy: none
+		sourceColumn: partial_month
+
+		annotation SummarizationSetBy = User
+
+	column rate_pct_pa
+		dataType: double
+		formatString: 0.00
+		lineageTag: 44ead5ee-5ff0-5ba9-b884-11e75d00d1b5
+		summarizeBy: none
+		sourceColumn: rate_pct_pa
+
+		annotation SummarizationSetBy = User
+
+	column nominal_return_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 9ed995d6-2510-42a7-c357-e82b34a9ea2f
+		summarizeBy: none
+		sourceColumn: nominal_return_pct
+
+		annotation SummarizationSetBy = User
+
+	column fx_effect_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 681db034-9833-c275-a8df-4b64bae729b5
+		summarizeBy: none
+		sourceColumn: fx_effect_pct
+
+		annotation SummarizationSetBy = User
+
+	column usd_adjusted_return_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 9e1dc64b-f24e-f5ae-b630-ffc90274a208
+		summarizeBy: none
+		sourceColumn: usd_adjusted_return_pct
+
+		annotation SummarizationSetBy = User
+
+	column real_zwg_return_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: c1b262da-517a-1ffb-f466-6c08f7484011
+		summarizeBy: none
+		sourceColumn: real_zwg_return_pct
+
+		annotation SummarizationSetBy = User
+
+	column usd_adjusted_real_return_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 49876081-7d37-0205-844f-7a16ecdf405f
+		summarizeBy: none
+		sourceColumn: usd_adjusted_real_return_pct
+
+		annotation SummarizationSetBy = User
+
+	column cum_usd_index
+		dataType: double
+		formatString: 0.00
+		lineageTag: a5358c5b-219f-eb5e-cd6a-61e7c2b39771
+		summarizeBy: none
+		sourceColumn: cum_usd_index
+
+		annotation SummarizationSetBy = User
+
+	column zwg_cpi_imputed
+		dataType: boolean
+		lineageTag: 6836bd39-202c-e49a-00b0-0984836fd98f
+		summarizeBy: none
+		sourceColumn: zwg_cpi_imputed
+
+		annotation SummarizationSetBy = User
+
+	partition returns_monthly = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "returns_monthly.csv"),[Delimiter=",", Columns=15, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"question_id", type text}, {"period", type text}, {"period_date", type date}, {"instrument", type text}, {"currency_held", type text}, {"days", Int64.Type}, {"partial_month", type logical}, {"rate_pct_pa", type number}, {"nominal_return_pct", type number}, {"fx_effect_pct", type number}, {"usd_adjusted_return_pct", type number}, {"real_zwg_return_pct", type number}, {"usd_adjusted_real_return_pct", type number}, {"cum_usd_index", type number}, {"zwg_cpi_imputed", type logical}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

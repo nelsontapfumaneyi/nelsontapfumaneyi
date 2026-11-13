@@ -1,0 +1,51 @@
+table fx_daily
+	lineageTag: d295b2a6-cc0d-e19b-455a-afb1305db9f7
+
+	column date_key
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: d8dcbdc0-9352-642e-b31e-07d4ff10f4c9
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column zwg_per_usd
+		dataType: double
+		formatString: 0.00
+		lineageTag: f07956d4-eb68-e0b2-c458-39b578da7cfb
+		summarizeBy: none
+		sourceColumn: zwg_per_usd
+
+		annotation SummarizationSetBy = User
+
+	column is_carried_forward
+		dataType: boolean
+		lineageTag: a4f87c58-785a-28ca-6a2d-c2a943f1b2ae
+		summarizeBy: none
+		sourceColumn: is_carried_forward
+
+		annotation SummarizationSetBy = User
+
+	column rate_source
+		dataType: string
+		lineageTag: d08e51fa-0e8c-49c6-e9a5-7ca460f47eff
+		summarizeBy: none
+		sourceColumn: rate_source
+
+		annotation SummarizationSetBy = User
+
+	partition fx_daily = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fx_daily.csv"),[Delimiter=",", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"date_key", type date}, {"zwg_per_usd", type number}, {"is_carried_forward", type logical}, {"rate_source", type text}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

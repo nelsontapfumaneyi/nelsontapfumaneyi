@@ -1,0 +1,13 @@
+# Power BI local files (machine-specific)
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+# Tableau lock and backup files
+tableau/~*
+*.twbr
+# Pipeline working folders (re-created by the scripts)
+raw/
+rejects/
+*.dump
+# Python
+__pycache__/
+*.pyc

@@ -1,0 +1,124 @@
+table scenarios
+	lineageTag: 386395de-321e-7302-934f-3d9c3b592693
+
+	column question_id
+		dataType: string
+		lineageTag: 5a82582e-36f4-bf50-181d-67f4892dddeb
+		summarizeBy: none
+		sourceColumn: question_id
+
+		annotation SummarizationSetBy = User
+
+	column scenario
+		dataType: string
+		lineageTag: e7d4b500-1b60-f984-75a4-8fffe8402b2b
+		summarizeBy: none
+		sourceColumn: scenario
+
+		annotation SummarizationSetBy = User
+
+	column kind
+		dataType: string
+		lineageTag: d392afa4-9a9e-ce1f-e279-fb56156ea541
+		summarizeBy: none
+		sourceColumn: kind
+
+		annotation SummarizationSetBy = User
+
+	column conversion_case
+		dataType: string
+		lineageTag: 52023dac-dc5b-6a50-b1e9-1719544ea8d7
+		summarizeBy: none
+		sourceColumn: conversion_case
+
+		annotation SummarizationSetBy = User
+
+	column depreciation_case
+		dataType: string
+		lineageTag: 3ae06a32-29ea-e424-9e61-b667995b9a8f
+		summarizeBy: none
+		sourceColumn: depreciation_case
+
+		annotation SummarizationSetBy = User
+
+	column hold_label
+		dataType: string
+		lineageTag: 7571ef01-44b9-62ed-a30b-11f68f7964fc
+		summarizeBy: none
+		sourceColumn: hold_label
+		sortByColumn: hold_months
+
+		annotation SummarizationSetBy = User
+
+	column hold_months
+		dataType: int64
+		formatString: 0
+		lineageTag: be16e18a-5a3c-dc36-6dc7-9646ebc95d94
+		summarizeBy: none
+		sourceColumn: hold_months
+
+		annotation SummarizationSetBy = User
+
+	column instrument
+		dataType: string
+		lineageTag: 6e091ef3-07b8-b8fd-e62e-3719c7446faf
+		summarizeBy: none
+		sourceColumn: instrument
+
+		annotation SummarizationSetBy = User
+
+	column assumptions
+		dataType: string
+		lineageTag: 0dc7a72c-5de8-e68d-4102-37364bc67fe6
+		summarizeBy: none
+		sourceColumn: assumptions
+
+		annotation SummarizationSetBy = User
+
+	column p5
+		dataType: double
+		formatString: 0.00
+		lineageTag: f7db36eb-9eff-8fca-c7d4-3e5b01ed517f
+		summarizeBy: none
+		sourceColumn: p5
+
+		annotation SummarizationSetBy = User
+
+	column p50
+		dataType: double
+		formatString: 0.00
+		lineageTag: d3340bae-0369-b5e1-96b7-e3bda12a3edb
+		summarizeBy: none
+		sourceColumn: p50
+
+		annotation SummarizationSetBy = User
+
+	column p95
+		dataType: double
+		formatString: 0.00
+		lineageTag: de0107b9-62b7-47cb-8e2d-f86c11867434
+		summarizeBy: none
+		sourceColumn: p95
+
+		annotation SummarizationSetBy = User
+
+	column unit
+		dataType: string
+		lineageTag: 50b81f07-9103-786e-a2ed-88c38f151335
+		summarizeBy: none
+		sourceColumn: unit
+
+		annotation SummarizationSetBy = User
+
+	partition scenarios = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "scenarios.csv"),[Delimiter=",", Columns=13, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"question_id", type text}, {"scenario", type text}, {"kind", type text}, {"conversion_case", type text}, {"depreciation_case", type text}, {"hold_label", type text}, {"hold_months", Int64.Type}, {"instrument", type text}, {"assumptions", type text}, {"p5", type number}, {"p50", type number}, {"p95", type number}, {"unit", type text}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

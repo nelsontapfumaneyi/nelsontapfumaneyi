@@ -1,0 +1,13 @@
+event_date,event_type,instrument,tenor_days,currency,rate_pct,amount_zwg_m,source_url,status,source_file,source_id,loaded_at
+2024-04-08,launch,ZiG introduction (mid 13.5616),,ZWG,,,https://www.rbz.co.zw/documents/Exchange_Rates/2024/April/RATES_8_APRIL_2024.pdf,verified,raw/D6_rbz_events.csv,D6,2026-11-13T19:36:38+00:00
+2024-09-27,devaluation,ZiG mid 13.9987 (26 Sep) to 24.3902 (27 Sep): -42.6% vs USD,,ZWG,,,https://www.rbz.co.zw/documents/Exchange_Rates/2024/September/RATES_27_SEPTEMBER_2024.pdf,verified,raw/D6_rbz_events.csv,D6,2026-11-13T19:36:38+00:00
+2026-02-27,min_deposit_rate,savings,,ZWG,5.0,,https://www.heraldonline.co.zw/single-digit-inflation-stable-exchange-rate-mark-2026-monetary-policy-milestones/,single_source,raw/D6_rbz_events.csv,D6,2026-11-13T19:36:38+00:00
+2026-02-27,min_deposit_rate,savings,,USD,2.5,,https://www.heraldonline.co.zw/single-digit-inflation-stable-exchange-rate-mark-2026-monetary-policy-milestones/,single_source,raw/D6_rbz_events.csv,D6,2026-11-13T19:36:38+00:00
+2026-02-27,min_deposit_rate,time deposit,,ZWG,7.5,,https://www.heraldonline.co.zw/single-digit-inflation-stable-exchange-rate-mark-2026-monetary-policy-milestones/,single_source,raw/D6_rbz_events.csv,D6,2026-11-13T19:36:38+00:00
+2026-02-27,min_deposit_rate,time deposit,,USD,4.0,,https://www.heraldonline.co.zw/single-digit-inflation-stable-exchange-rate-mark-2026-monetary-policy-milestones/,single_source,raw/D6_rbz_events.csv,D6,2026-11-13T19:36:38+00:00
+2026-06-04,zigdtdf_auction,ZiGDTDF,90.0,ZWG,10.98,331.6,https://www.heraldonline.co.zw/rbz-moves-to-anchor-zig-as-store-of-value/,verified,raw/D6_rbz_events.csv,D6,2026-11-13T19:36:38+00:00
+2026-06-10,zigdtdf_tap,ZiGDTDF,30.0,ZWG,8.0,,https://www.newsday.co.zw/local-news/article/200056702/rbz-mops-up-liquidity-with-new-zig-bills,verified,raw/D6_rbz_events.csv,D6,2026-11-13T19:36:38+00:00
+2026-06-10,zigdtdf_tap,ZiGDTDF,60.0,ZWG,9.0,,https://www.newsday.co.zw/local-news/article/200056702/rbz-mops-up-liquidity-with-new-zig-bills,verified,raw/D6_rbz_events.csv,D6,2026-11-13T19:36:38+00:00
+2026-06-10,zigdtdf_tap,ZiGDTDF,90.0,ZWG,11.0,,https://www.newsday.co.zw/local-news/article/200056702/rbz-mops-up-liquidity-with-new-zig-bills,verified,raw/D6_rbz_events.csv,D6,2026-11-13T19:36:38+00:00
+2026-06-15,policy_rate,Bank Policy Rate,,ZWG,30.0,,https://www.heraldonline.co.zw/rbz-slashes-policy-rate-to-30-percent-in-first-cut-since-zig-launch/,verified,raw/D6_rbz_events.csv,D6,2026-11-13T19:36:38+00:00
+2026-09-28,policy_rate,Bank Policy Rate,,ZWG,27.5,,https://www.heraldonline.co.zw/rbz-cuts-policy-rate-to-275pc/,verified,raw/D6_rbz_events.csv,D6,2026-11-13T19:36:38+00:00

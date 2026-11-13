@@ -1,0 +1,41 @@
+question_id,instrument,window_days,regime,windows,share_loss_pct,share_below_tbill_pct,worst_return_pct,worst_window_start,median_return_pct,best_return_pct
+BQ4,ZWG_cash,30,all windows,876,54.223744,67.694064,-49.468362,2024-09-25,-0.145093,12.864874
+BQ4,ZWG_cash,30,windows starting 2025-01-01 or later,608,43.256579,61.184211,-6.020113,2026-04-29,0.15043,2.090941
+BQ4,ZWG_cash,90,all windows,816,56.617647,71.323529,-52.008339,2024-08-05,-1.086402,8.859376
+BQ4,ZWG_cash,90,windows starting 2025-01-01 or later,548,40.693431,61.678832,-5.957627,2026-04-10,0.487273,4.033867
+BQ4,ZWG_cash,,"max drawdown, full window",906,,,-53.915748,2024-11-01,,
+BQ4,ZWG_savings_min,30,all windows,876,44.063927,54.3379,-49.31262,2024-09-25,0.177025,13.212744
+BQ4,ZWG_savings_min,30,windows starting 2025-01-01 or later,608,31.414474,42.927632,-5.685461,2026-04-29,0.466335,2.408273
+BQ4,ZWG_savings_min,90,all windows,816,51.593137,58.578431,-51.563226,2024-08-05,-0.123077,9.831364
+BQ4,ZWG_savings_min,90,windows starting 2025-01-01 or later,548,34.124088,43.430657,-4.972331,2026-04-10,1.46956,5.001684
+BQ4,ZWG_savings_min,,"max drawdown, full window",906,,,-53.14393,2024-10-31,,
+BQ4,ZWG_savings_max,30,all windows,876,43.493151,53.538813,-49.307221,2024-09-25,0.194681,13.22437
+BQ4,ZWG_savings_max,30,windows starting 2025-01-01 or later,608,30.921053,41.776316,-5.698024,2026-04-29,0.488473,2.435961
+BQ4,ZWG_savings_max,90,all windows,816,50.980392,57.230392,-51.547767,2024-08-05,-0.042307,9.813232
+BQ4,ZWG_savings_max,90,windows starting 2025-01-01 or later,548,33.211679,41.423358,-4.932736,2026-04-10,1.524933,5.086878
+BQ4,ZWG_savings_max,,"max drawdown, full window",906,,,-53.11714,2024-10-31,,
+BQ4,ZWG_3m_deposit_min,30,all windows,876,36.872146,49.771689,-49.244652,2024-09-25,0.355154,13.315361
+BQ4,ZWG_3m_deposit_min,30,windows starting 2025-01-01 or later,608,22.697368,36.842105,-5.489497,2026-04-29,0.70769,2.657339
+BQ4,ZWG_3m_deposit_min,90,all windows,816,46.813725,53.676471,-51.378084,2024-08-05,0.415069,10.311474
+BQ4,ZWG_3m_deposit_min,90,windows starting 2025-01-01 or later,548,27.007299,36.313869,-4.26823,2026-04-10,2.175061,5.790785
+BQ4,ZWG_3m_deposit_min,,"max drawdown, full window",906,,,-52.824831,2024-10-31,,
+BQ4,ZWG_3m_deposit_max,30,all windows,876,32.077626,41.09589,-49.178421,2024-09-25,0.635997,13.444934
+BQ4,ZWG_3m_deposit_max,30,windows starting 2025-01-01 or later,608,16.776316,24.506579,-5.135806,2026-04-29,1.055353,2.983672
+BQ4,ZWG_3m_deposit_max,90,all windows,816,40.196078,48.161765,-51.251331,2024-08-05,1.207374,10.883446
+BQ4,ZWG_3m_deposit_max,90,windows starting 2025-01-01 or later,548,17.335766,28.284672,-3.126751,2026-04-10,3.149079,6.824773
+BQ4,ZWG_3m_deposit_max,,"max drawdown, full window",906,,,-52.650349,2024-10-31,,
+BQ4,ZWG_ZiGDTDF_90d,30,all windows,89,3.370787,5.617978,-0.422177,2026-08-30,1.074359,2.189316
+BQ4,ZWG_ZiGDTDF_90d,30,windows starting 2025-01-01 or later,89,3.370787,5.617978,-0.422177,2026-08-30,1.074359,2.189316
+BQ4,ZWG_ZiGDTDF_90d,90,all windows,29,0.0,0.0,2.368901,2026-06-16,3.182673,3.676581
+BQ4,ZWG_ZiGDTDF_90d,90,windows starting 2025-01-01 or later,29,0.0,0.0,2.368901,2026-06-16,3.182673,3.676581
+BQ4,ZWG_ZiGDTDF_90d,,"max drawdown, full window",119,,,-1.088971,2026-09-07,,
+BQ4,USD_cash,30,all windows,876,0.0,100.0,0.0,2024-04-08,0.0,0.0
+BQ4,USD_cash,30,windows starting 2025-01-01 or later,608,0.0,100.0,0.0,2025-01-01,0.0,0.0
+BQ4,USD_cash,90,all windows,816,0.0,100.0,0.0,2024-04-08,0.0,0.0
+BQ4,USD_cash,90,windows starting 2025-01-01 or later,548,0.0,100.0,0.0,2025-01-01,0.0,0.0
+BQ4,USD_cash,,"max drawdown, full window",906,,,0.0,2024-04-08,,
+BQ4,USD_tbill_3m,30,all windows,876,0.0,0.0,0.299812,2025-12-31,0.354068,0.443585
+BQ4,USD_tbill_3m,30,windows starting 2025-01-01 or later,608,0.0,0.0,0.299812,2025-12-31,0.32007,0.357798
+BQ4,USD_tbill_3m,90,all windows,816,0.0,0.0,0.907255,2025-11-30,1.067082,1.334197
+BQ4,USD_tbill_3m,90,windows starting 2025-01-01 or later,548,0.0,0.0,0.907255,2025-11-30,0.953857,1.075992
+BQ4,USD_tbill_3m,,"max drawdown, full window",906,,,0.0,2024-04-08,,

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "ZiG Returns"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "7210cfce-e6bb-4fe2-8220-831cf3d5e70f"
+  }
+}

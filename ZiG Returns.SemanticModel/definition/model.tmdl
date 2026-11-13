@@ -1,0 +1,28 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DevMode"]
+
+annotation PBI_QueryOrder = ["DataFolder", "findings", "returns_monthly", "subperiods", "rolling", "scenarios", "fx_daily", "dim_instrument", "dim_date", "return_basis"]
+
+ref table findings
+ref table returns_monthly
+ref table subperiods
+ref table rolling
+ref table scenarios
+ref table fx_daily
+ref table dim_instrument
+ref table dim_date
+ref table return_basis
+ref table _Measures
+
+ref cultureInfo en-US
+

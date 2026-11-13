@@ -1,0 +1,179 @@
+table _Measures
+	lineageTag: d3fdb41f-e9d9-5bdf-679d-995b57ae2c43
+
+	measure 'ZiG Cash USD Return Since Launch %' = CALCULATE ( SUM ( findings[number] ), findings[row_id] = 0 )
+		formatString: 0.00
+		displayFolder: Headline
+		lineageTag: 76b55562-63c2-995e-8cf4-506af5430fae
+
+	measure '3M Deposit Max USD Return Since 2025 %' = CALCULATE ( SUM ( findings[number] ), findings[row_id] = 4 )
+		formatString: +0.00;-0.00;0.00
+		displayFolder: Headline
+		lineageTag: 2b961329-42f0-b460-ea22-4900d9b50150
+
+	measure '3M Deposit Max Spread 2026 pp' = CALCULATE ( SUM ( findings[number] ), findings[row_id] = 6 )
+		formatString: +0.00;-0.00;0.00
+		displayFolder: Headline
+		lineageTag: 922b3473-702f-c62a-26d3-12556818a23a
+
+	measure 'Savings Max Spread 2026 pp' = CALCULATE ( SUM ( findings[number] ), findings[row_id] = 8 )
+		formatString: +0.00;-0.00;0.00
+		displayFolder: Headline
+		lineageTag: d2889162-e45d-4d8f-b03b-cf4a91edf871
+
+	measure 'Required Yield Already ZiG %' = CALCULATE ( SUM ( findings[number] ), findings[row_id] = 12 )
+		formatString: 0.00
+		displayFolder: Headline
+		lineageTag: 7a6e913b-cd41-26e9-412e-08ff6d75c6c7
+
+	measure 'Required Yield Converter 12m %' = CALCULATE ( SUM ( findings[number] ), findings[row_id] = 13 )
+		formatString: 0.00
+		displayFolder: Headline
+		lineageTag: 5b8765f3-5e45-0c62-0ff3-15b8f6b27f44
+
+	measure 'ZiG Cash 90d Loss Share Since 2025 %' = CALCULATE ( SUM ( findings[number] ), findings[row_id] = 17 )
+		formatString: 0.00
+		displayFolder: Headline
+		lineageTag: 82ca9a74-1be7-ea32-431b-e957f44f2d4a
+
+	measure '3M Max 90d Loss Share Since 2025 %' = CALCULATE ( SUM ( findings[number] ), findings[row_id] = 18 )
+		formatString: 0.00
+		displayFolder: Headline
+		lineageTag: da992d7a-cf89-7b67-83ac-e15e1e836d46
+
+	measure 'Selected Basis' = SELECTEDVALUE ( return_basis[basis], "USD-adjusted" )
+		displayFolder: Returns
+		lineageTag: 8dc64275-2a69-cb0d-8a42-ca0eec3fc69c
+
+	measure 'Monthly Return %' = SWITCH ( [Selected Basis], "USD-adjusted", SUM ( returns_monthly[usd_adjusted_return_pct] ), "USD-adjusted real", SUM ( returns_monthly[usd_adjusted_real_return_pct] ), "ZiG nominal", SUM ( returns_monthly[nominal_return_pct] ), "ZiG real", SUM ( returns_monthly[real_zwg_return_pct] ) )
+		formatString: 0.00
+		displayFolder: Returns
+		lineageTag: 63906ebb-8fde-ea61-2cca-09cfca1b62b6
+
+	measure 'Cumulative USD Index' = VAR lastP = MAX ( returns_monthly[period_date] ) RETURN CALCULATE ( SUM ( returns_monthly[cum_usd_index] ), returns_monthly[period_date] = lastP )
+		formatString: 0.0
+		displayFolder: Returns
+		lineageTag: 1692546e-1b93-fcc2-adc2-caf57e4dbf92
+
+	measure 'Cumulative USD Index (chart)' = CALCULATE ( [Cumulative USD Index], KEEPFILTERS ( dim_instrument[instrument] IN {"ZWG_cash", "ZWG_savings_max", "ZWG_3m_deposit_max", "USD_tbill_3m", "USD_cash"} ) )
+		formatString: 0.0
+		displayFolder: Returns
+		lineageTag: 5a6a1451-3039-7ee9-6ff3-2f8eebb6e717
+
+	measure 'Quoted Rate % p.a.' = AVERAGE ( returns_monthly[rate_pct_pa] )
+		formatString: 0.00
+		displayFolder: Returns
+		lineageTag: 7b6bb4d6-10df-e1e4-8005-358bbcdff236
+
+	measure 'Rate Sep 2026 3M Deposit Max %' = CALCULATE ( SUM ( returns_monthly[rate_pct_pa] ), returns_monthly[period] = "2026-09", returns_monthly[instrument] = "ZWG_3m_deposit_max" )
+		formatString: 0.00
+		displayFolder: Returns
+		lineageTag: 8984221e-ccda-5148-a7db-525f2ef6048a
+
+	measure 'Rate Sep 2026 ZiGDTDF %' = CALCULATE ( SUM ( returns_monthly[rate_pct_pa] ), returns_monthly[period] = "2026-09", returns_monthly[instrument] = "ZWG_ZiGDTDF_90d" )
+		formatString: 0.00
+		displayFolder: Returns
+		lineageTag: 10ae4e3d-4248-0fc4-1e26-98e6005cec8c
+
+	measure 'Rate Sep 2026 Savings Max %' = CALCULATE ( SUM ( returns_monthly[rate_pct_pa] ), returns_monthly[period] = "2026-09", returns_monthly[instrument] = "ZWG_savings_max" )
+		formatString: 0.00
+		displayFolder: Returns
+		lineageTag: bab0166b-dd52-3c14-f741-cf6277b8bfa3
+
+	measure 'ZiG Cash Index Sep 2026' = CALCULATE ( SUM ( returns_monthly[cum_usd_index] ), returns_monthly[instrument] = "ZWG_cash", returns_monthly[period] = "2026-09" )
+		formatString: 0.00
+		displayFolder: Tie-out
+		lineageTag: 11611562-5b06-1445-7c14-178bbbaca0f6
+
+	measure 'Annualised USD Return %' = SUM ( subperiods[annualised_pct] )
+		formatString: 0.00
+		displayFolder: Comparisons
+		lineageTag: d3f61405-bdbe-c2ca-70e2-12f24ae1bffe
+
+	measure 'Spread vs T-bill pp' = SUM ( subperiods[spread_vs_tbill_ann_pp] )
+		formatString: +0.00;-0.00;0.00
+		displayFolder: Comparisons
+		lineageTag: ea7608df-5830-27bc-af93-e7514fb300ba
+
+	measure 'Spread vs T-bill (chart) pp' = CALCULATE ( [Spread vs T-bill pp], KEEPFILTERS ( subperiods[subperiod] IN {"P1 pre-devaluation", "P3 2025", "P4 2026 to Sep"} ), KEEPFILTERS ( dim_instrument[instrument] IN {"ZWG_cash", "ZWG_savings_max", "ZWG_3m_deposit_max", "ZWG_ZiGDTDF_90d"} ) )
+		formatString: +0.0;-0.0;0.0
+		displayFolder: Comparisons
+		lineageTag: f80dc9ef-6e08-9b73-ef66-5edc29a085e4
+
+	measure 'Required Yield %' = SUM ( scenarios[p50] )
+		formatString: 0.00
+		displayFolder: Comparisons
+		lineageTag: 8fd93305-340f-9544-ddfd-da0f046e9300
+
+	measure 'Required Yield (chart) %' = CALCULATE ( [Required Yield %], scenarios[kind] = "required ZiG yield", scenarios[depreciation_case] = "2026 realised depreciation", KEEPFILTERS ( scenarios[hold_months] IN {3, 6, 12} ) )
+		formatString: 0.0
+		displayFolder: Comparisons
+		lineageTag: 45e06c7e-af98-af1d-1097-08269736a589
+
+	measure 'Scenario P5' = CALCULATE ( SUM ( scenarios[p5] ), scenarios[kind] <> "required ZiG yield" )
+		formatString: 0.00
+		displayFolder: Comparisons
+		lineageTag: 39bf63e2-87ab-9832-e2bd-da8c3cda15a2
+
+	measure 'Scenario P50' = CALCULATE ( SUM ( scenarios[p50] ), scenarios[kind] <> "required ZiG yield" )
+		formatString: 0.00
+		displayFolder: Comparisons
+		lineageTag: 95fac62b-13aa-10d9-84ea-2c446747077c
+
+	measure 'Scenario P95' = CALCULATE ( SUM ( scenarios[p95] ), scenarios[kind] <> "required ZiG yield" )
+		formatString: 0.00
+		displayFolder: Comparisons
+		lineageTag: 2771a1c3-ae9a-7cfe-522a-42efa33d046d
+
+	measure 'Loss Window Share %' = SUM ( rolling[share_loss_pct] )
+		formatString: 0.00
+		displayFolder: Comparisons
+		lineageTag: d1bd253a-1d15-b624-53d3-cb85a8fb2831
+
+	measure 'Loss Share 90d Since 2025 %' = CALCULATE ( [Loss Window Share %], rolling[window_days] = 90, rolling[regime] = "windows starting 2025-01-01 or later" )
+		formatString: 0.0
+		displayFolder: Comparisons
+		lineageTag: 700aac30-a27d-4dce-8491-3fb37b6b6311
+
+	measure 'Worst Window Return %' = MIN ( rolling[worst_return_pct] )
+		formatString: 0.00
+		displayFolder: Comparisons
+		lineageTag: 02756308-1f7b-dbe2-3273-9fd7cb499c94
+
+	measure 'ZiG per USD' = AVERAGE ( fx_daily[zwg_per_usd] )
+		formatString: 0.0000
+		displayFolder: FX
+		lineageTag: 19483c1b-c87f-e999-bcb7-1cc9515d30d2
+
+	measure 'ZiG per USD Month End' = CALCULATE ( [ZiG per USD], LASTDATE ( dim_date[Date] ) )
+		formatString: 0.0000
+		displayFolder: FX
+		lineageTag: 8acaf35f-4f1b-69f6-5549-862f6722766b
+
+	measure 'ZiG per USD on 2026-11-13' = CALCULATE ( SUM ( fx_daily[zwg_per_usd] ), fx_daily[date_key] = DATE ( 2026, 11, 13 ) )
+		formatString: 0.0000
+		displayFolder: Tie-out
+		lineageTag: d4e11ef4-80d4-4d16-23fb-a4a621e466db
+
+	measure 'Monthly Return % (one instrument)' = VAR inst = SELECTEDVALUE ( dim_instrument[instrument], "ZWG_cash" ) RETURN CALCULATE ( [Monthly Return %], dim_instrument[instrument] = inst )
+		formatString: 0.00
+		displayFolder: Returns
+		lineageTag: 05e824de-aa81-a09d-e60e-14753318bb44
+
+	column Value
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 32f84fdd-2b1c-329b-ed6f-e05542251442
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = User
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW ( "Value", 0 )
+
+	annotation PBI_Id = 520fff5fe7efe6c47ba6
+

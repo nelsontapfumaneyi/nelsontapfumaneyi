@@ -1,0 +1,20 @@
+relationship e52cdd09-ef29-c6b1-f7a9-e3200480b556
+	fromColumn: returns_monthly.instrument
+	toColumn: dim_instrument.instrument
+
+relationship a5e18569-d312-5799-9772-afe7cb3f55cc
+	fromColumn: subperiods.instrument
+	toColumn: dim_instrument.instrument
+
+relationship 89606a43-7fc5-f343-8df8-58a204043605
+	fromColumn: rolling.instrument
+	toColumn: dim_instrument.instrument
+
+relationship e67dff05-8bc7-b18b-775c-c4fb9fd78322
+	fromColumn: returns_monthly.period_date
+	toColumn: dim_date.Date
+
+relationship 77bcc3aa-902a-da74-fef7-b8b7ce36e885
+	fromColumn: fx_daily.date_key
+	toColumn: dim_date.Date
+

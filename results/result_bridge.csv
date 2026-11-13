@@ -1,0 +1,31 @@
+step,amount,currency,period_from,period_to,question_id,instrument
+ZWG_cash: interest effect (log pts),0.000000,USD,2024-04-08,2026-09-30,BQ1,ZWG_cash
+ZWG_cash: FX effect (log pts),-68.102901,USD,2024-04-08,2026-09-30,BQ1,ZWG_cash
+ZWG_cash: total USD-adjusted (log pts),-68.102901,USD,2024-04-08,2026-09-30,BQ1,ZWG_cash
+ZWG_cash: check: effects minus total (must be 0),0.000000,USD,2024-04-08,2026-09-30,BQ1,ZWG_cash
+ZWG_cash: total USD-adjusted (% simple),-49.390405,USD,2024-04-08,2026-09-30,BQ1,ZWG_cash
+ZWG_savings_min: interest effect (log pts),9.627745,USD,2024-04-08,2026-09-30,BQ1,ZWG_savings_min
+ZWG_savings_min: FX effect (log pts),-68.102901,USD,2024-04-08,2026-09-30,BQ1,ZWG_savings_min
+ZWG_savings_min: total USD-adjusted (log pts),-58.475156,USD,2024-04-08,2026-09-30,BQ1,ZWG_savings_min
+ZWG_savings_min: check: effects minus total (must be 0),0.000000,USD,2024-04-08,2026-09-30,BQ1,ZWG_savings_min
+ZWG_savings_min: total USD-adjusted (% simple),-44.275572,USD,2024-04-08,2026-09-30,BQ1,ZWG_savings_min
+ZWG_savings_max: interest effect (log pts),10.161037,USD,2024-04-08,2026-09-30,BQ1,ZWG_savings_max
+ZWG_savings_max: FX effect (log pts),-68.102901,USD,2024-04-08,2026-09-30,BQ1,ZWG_savings_max
+ZWG_savings_max: total USD-adjusted (log pts),-57.941864,USD,2024-04-08,2026-09-30,BQ1,ZWG_savings_max
+ZWG_savings_max: check: effects minus total (must be 0),0.000000,USD,2024-04-08,2026-09-30,BQ1,ZWG_savings_max
+ZWG_savings_max: total USD-adjusted (% simple),-43.977603,USD,2024-04-08,2026-09-30,BQ1,ZWG_savings_max
+ZWG_3m_deposit_min: interest effect (log pts),15.591528,USD,2024-04-08,2026-09-30,BQ1,ZWG_3m_deposit_min
+ZWG_3m_deposit_min: FX effect (log pts),-68.102901,USD,2024-04-08,2026-09-30,BQ1,ZWG_3m_deposit_min
+ZWG_3m_deposit_min: total USD-adjusted (log pts),-52.511374,USD,2024-04-08,2026-09-30,BQ1,ZWG_3m_deposit_min
+ZWG_3m_deposit_min: check: effects minus total (must be 0),0.000000,USD,2024-04-08,2026-09-30,BQ1,ZWG_3m_deposit_min
+ZWG_3m_deposit_min: total USD-adjusted (% simple),-40.851191,USD,2024-04-08,2026-09-30,BQ1,ZWG_3m_deposit_min
+ZWG_3m_deposit_max: interest effect (log pts),23.331709,USD,2024-04-08,2026-09-30,BQ1,ZWG_3m_deposit_max
+ZWG_3m_deposit_max: FX effect (log pts),-68.102901,USD,2024-04-08,2026-09-30,BQ1,ZWG_3m_deposit_max
+ZWG_3m_deposit_max: total USD-adjusted (log pts),-44.771192,USD,2024-04-08,2026-09-30,BQ1,ZWG_3m_deposit_max
+ZWG_3m_deposit_max: check: effects minus total (must be 0),0.000000,USD,2024-04-08,2026-09-30,BQ1,ZWG_3m_deposit_max
+ZWG_3m_deposit_max: total USD-adjusted (% simple),-36.091123,USD,2024-04-08,2026-09-30,BQ1,ZWG_3m_deposit_max
+ZWG_ZiGDTDF_90d: interest effect (log pts),3.533500,USD,2026-06-04,2026-09-30,BQ1,ZWG_ZiGDTDF_90d
+ZWG_ZiGDTDF_90d: FX effect (log pts),0.326375,USD,2026-06-04,2026-09-30,BQ1,ZWG_ZiGDTDF_90d
+ZWG_ZiGDTDF_90d: total USD-adjusted (log pts),3.859875,USD,2026-06-04,2026-09-30,BQ1,ZWG_ZiGDTDF_90d
+ZWG_ZiGDTDF_90d: check: effects minus total (must be 0),0.000000,USD,2026-06-04,2026-09-30,BQ1,ZWG_ZiGDTDF_90d
+ZWG_ZiGDTDF_90d: total USD-adjusted (% simple),3.935336,USD,2026-06-04,2026-09-30,BQ1,ZWG_ZiGDTDF_90d

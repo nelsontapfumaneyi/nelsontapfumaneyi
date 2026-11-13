@@ -1,0 +1,172 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "6013a7f242de86ba1f05",
+  "position": {
+    "x": 20,
+    "y": 380,
+    "z": 2,
+    "height": 300,
+    "width": 1240,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "rolling"
+                    }
+                  },
+                  "Property": "instrument"
+                }
+              },
+              "queryRef": "rolling.instrument",
+              "nativeQueryRef": "instrument"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "rolling"
+                    }
+                  },
+                  "Property": "window_days"
+                }
+              },
+              "queryRef": "rolling.window_days",
+              "nativeQueryRef": "window_days"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "rolling"
+                    }
+                  },
+                  "Property": "regime"
+                }
+              },
+              "queryRef": "rolling.regime",
+              "nativeQueryRef": "regime"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "rolling"
+                    }
+                  },
+                  "Property": "windows"
+                }
+              },
+              "queryRef": "rolling.windows",
+              "nativeQueryRef": "windows"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "rolling"
+                    }
+                  },
+                  "Property": "share_loss_pct"
+                }
+              },
+              "queryRef": "rolling.share_loss_pct",
+              "nativeQueryRef": "share_loss_pct"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "rolling"
+                    }
+                  },
+                  "Property": "worst_return_pct"
+                }
+              },
+              "queryRef": "rolling.worst_return_pct",
+              "nativeQueryRef": "worst_return_pct"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "rolling"
+                    }
+                  },
+                  "Property": "worst_window_start"
+                }
+              },
+              "queryRef": "rolling.worst_window_start",
+              "nativeQueryRef": "worst_window_start"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Rolling-window detail (result_rolling.csv)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

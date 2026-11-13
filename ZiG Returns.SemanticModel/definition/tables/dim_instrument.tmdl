@@ -1,0 +1,49 @@
+table dim_instrument
+	lineageTag: 8c8d814e-e4cf-f532-ba6f-9e9984303172
+
+	column instrument
+		dataType: string
+		lineageTag: f5f2fea1-c6c3-1757-3013-00e2f32bfa2c
+		summarizeBy: none
+		sourceColumn: instrument
+
+		annotation SummarizationSetBy = User
+
+	column label
+		dataType: string
+		lineageTag: f21af886-e1f7-f96e-08e8-720a9e69d993
+		summarizeBy: none
+		sourceColumn: label
+		sortByColumn: sort
+
+		annotation SummarizationSetBy = User
+
+	column currency_held
+		dataType: string
+		lineageTag: 3ded8af1-ab64-180d-04a6-2c6442e3236b
+		summarizeBy: none
+		sourceColumn: currency_held
+
+		annotation SummarizationSetBy = User
+
+	column sort
+		dataType: int64
+		formatString: 0
+		lineageTag: e1c34c43-6906-1c43-3b81-698d67bf7498
+		summarizeBy: none
+		sourceColumn: sort
+
+		annotation SummarizationSetBy = User
+
+	partition dim_instrument = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_instrument.csv"),[Delimiter=",", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"instrument", type text}, {"label", type text}, {"currency_held", type text}, {"sort", Int64.Type}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

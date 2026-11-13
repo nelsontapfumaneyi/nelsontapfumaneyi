@@ -1,0 +1,5 @@
+expression DataFolder = "C:\Users\nelso\Documents\UMFDOP\zig-returns-2026-11-13\data\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 4781348e-990b-2bf7-a707-3c64ae138a79
+
+	annotation PBI_ResultType = Text
+

@@ -1,0 +1,150 @@
+table subperiods
+	lineageTag: 6622b872-b5d8-f96a-a3c2-d6a4107504f8
+
+	column question_id
+		dataType: string
+		lineageTag: d43dc9ed-9f93-ed85-1320-881f0f779f14
+		summarizeBy: none
+		sourceColumn: question_id
+
+		annotation SummarizationSetBy = User
+
+	column subperiod
+		dataType: string
+		lineageTag: e113d436-c585-893d-9503-372c01ae7dc1
+		summarizeBy: none
+		sourceColumn: subperiod
+
+		annotation SummarizationSetBy = User
+
+	column subperiod_label
+		dataType: string
+		lineageTag: e3512c24-1c36-b7c3-6217-dcfa6d919719
+		summarizeBy: none
+		sourceColumn: subperiod_label
+		sortByColumn: subperiod_order
+
+		annotation SummarizationSetBy = User
+
+	column subperiod_order
+		dataType: int64
+		formatString: 0
+		lineageTag: cf786e21-3972-0b10-99dd-a4b4d961a50c
+		summarizeBy: none
+		sourceColumn: subperiod_order
+
+		annotation SummarizationSetBy = User
+
+	column instrument
+		dataType: string
+		lineageTag: f143f9d7-8e7d-29cc-8ead-fff28855ddc3
+		summarizeBy: none
+		sourceColumn: instrument
+
+		annotation SummarizationSetBy = User
+
+	column from
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 6ae46292-472a-5084-f087-ec06fc2f0b6e
+		summarizeBy: none
+		sourceColumn: from
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column to
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: f4b27585-34bd-ff69-55af-612f3a60f2a4
+		summarizeBy: none
+		sourceColumn: to
+
+		annotation SummarizationSetBy = User
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column days
+		dataType: int64
+		formatString: 0
+		lineageTag: c9393ed8-1777-672e-2926-045866c43bba
+		summarizeBy: none
+		sourceColumn: days
+
+		annotation SummarizationSetBy = User
+
+	column usd_adjusted_return_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 88960510-e27e-3553-a465-a50fa10be657
+		summarizeBy: none
+		sourceColumn: usd_adjusted_return_pct
+
+		annotation SummarizationSetBy = User
+
+	column annualised_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: e169f6e1-8645-d205-585a-2125380e7c15
+		summarizeBy: none
+		sourceColumn: annualised_pct
+
+		annotation SummarizationSetBy = User
+
+	column tbill_return_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 47013d70-fe06-0b7c-3089-4b69b900dd06
+		summarizeBy: none
+		sourceColumn: tbill_return_pct
+
+		annotation SummarizationSetBy = User
+
+	column tbill_annualised_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 97461308-c8a5-1153-f53a-da83e5e80541
+		summarizeBy: none
+		sourceColumn: tbill_annualised_pct
+
+		annotation SummarizationSetBy = User
+
+	column spread_vs_tbill_ann_pp
+		dataType: double
+		formatString: 0.00
+		lineageTag: c2026136-24be-390a-32c6-109c01cf3a4d
+		summarizeBy: none
+		sourceColumn: spread_vs_tbill_ann_pp
+
+		annotation SummarizationSetBy = User
+
+	column spread_vs_usd_cash_ann_pp
+		dataType: double
+		formatString: 0.00
+		lineageTag: 8d4e0be4-ab68-284c-a784-9336421bd544
+		summarizeBy: none
+		sourceColumn: spread_vs_usd_cash_ann_pp
+
+		annotation SummarizationSetBy = User
+
+	column instrument_start_later
+		dataType: boolean
+		lineageTag: 046cd237-9d42-6dd3-1e3f-08764c25f448
+		summarizeBy: none
+		sourceColumn: instrument_start_later
+
+		annotation SummarizationSetBy = User
+
+	partition subperiods = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "subperiods.csv"),[Delimiter=",", Columns=15, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"question_id", type text}, {"subperiod", type text}, {"subperiod_label", type text}, {"subperiod_order", Int64.Type}, {"instrument", type text}, {"from", type date}, {"to", type date}, {"days", Int64.Type}, {"usd_adjusted_return_pct", type number}, {"annualised_pct", type number}, {"tbill_return_pct", type number}, {"tbill_annualised_pct", type number}, {"spread_vs_tbill_ann_pp", type number}, {"spread_vs_usd_cash_ann_pp", type number}, {"instrument_start_later", type logical}}, "en-US")
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

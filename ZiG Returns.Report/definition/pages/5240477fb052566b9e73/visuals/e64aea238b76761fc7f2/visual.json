@@ -1,0 +1,144 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "e64aea238b76761fc7f2",
+  "position": {
+    "x": 20,
+    "y": 346,
+    "z": 20,
+    "height": 334,
+    "width": 1240,
+    "tabOrder": 20
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "drillFilterOtherVisuals": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "findings"
+                    }
+                  },
+                  "Property": "question_id"
+                }
+              },
+              "queryRef": "findings.question_id",
+              "nativeQueryRef": "question_id"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "findings"
+                    }
+                  },
+                  "Property": "finding"
+                }
+              },
+              "queryRef": "findings.finding",
+              "nativeQueryRef": "finding"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "findings"
+                    }
+                  },
+                  "Property": "number"
+                }
+              },
+              "queryRef": "findings.number",
+              "nativeQueryRef": "number"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "findings"
+                    }
+                  },
+                  "Property": "unit"
+                }
+              },
+              "queryRef": "findings.unit",
+              "nativeQueryRef": "unit"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "findings"
+                    }
+                  },
+                  "Property": "confidence"
+                }
+              },
+              "queryRef": "findings.confidence",
+              "nativeQueryRef": "confidence"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'All findings (result_findings.csv)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

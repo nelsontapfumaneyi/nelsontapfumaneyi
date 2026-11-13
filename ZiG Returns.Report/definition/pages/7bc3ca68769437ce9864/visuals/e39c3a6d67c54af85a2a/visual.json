@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "e39c3a6d67c54af85a2a",
+  "position": {
+    "x": 20,
+    "y": 686,
+    "z": 30,
+    "height": 28,
+    "width": 1240,
+    "tabOrder": 30
+  },
+  "visual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Source: result_subperiods.csv. Data as of 2026-11-13. UMFDOP pipeline: RBZ, ZIMSTAT, IMF and FRED data; results from Agent 4 (2026-11-13).",
+                    "textStyle": {
+                      "fontSize": "9pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
