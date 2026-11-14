@@ -11,3 +11,27 @@ rejects/
 # Python
 __pycache__/
 *.pyc
+
+# Local credentials and browser authentication state
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+.netrc
+.pgpass
+id_rsa
+id_ed25519
+id_ecdsa
+*.key
+*.p12
+*.pfx
+cookies.txt
+cookies.json
+storageState.json
+auth.json
+*.har
+.auth/
+.playwright/
+# Local AI/tool configuration (may contain secrets or private paths)
+.claude/settings.local.json

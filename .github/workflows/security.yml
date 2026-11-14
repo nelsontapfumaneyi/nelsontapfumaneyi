@@ -1,0 +1,21 @@
+name: Security disclosure guard
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  disclosure-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Test disclosure guard
+        run: node --test scripts/security-check.test.mjs
+      - name: Scan tracked files and new commit history
+        # Existing session-link disclosures remain tracked separately for cleanup.
+        run: node scripts/security-check.mjs --since c09812e3e37062903feaac63e48b325dc277197d
