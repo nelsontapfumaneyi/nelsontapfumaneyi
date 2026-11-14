@@ -5,9 +5,9 @@
 **Why it matters:** on 12 November 2026 the central bank (RBZ) said it wants to build a short-term ZiG "yield curve", meaning a set of interest rates for different terms, so that people save in ZiG and not only spend it. Savers will do that only if ZiG earns more than US dollars. This project measures whether it has.
 
 ## Three findings
-1. **Since launch, no ZiG product held its US-dollar value.** From 8 Apr 2024 to 30 Sep 2026, ZiG cash lost **49.4%** in US-dollar terms. The best ZiG 3-month deposit still lost **36.1%**. One day, the 27 Sep 2024 devaluation (−42.6%), drives most of the loss.
-2. **Since January 2025, ZiG term deposits have beaten US dollars; savings accounts have not.** The best 3-month deposit rate earned **+16.1%** in US-dollar terms over 21 months. In 2026 it beat the US Treasury bill by **4.4 points a year**, while ZiG savings trailed it by **3.6 points**.
-3. **Converting US dollars into ZiG pays only on long holds.** Someone who already earns ZiG needs about **6.9%** a year to match the Treasury bill. Someone who converts US dollars in and back out pays a 4.9% round trip, so needs **12.4%** for a one-year hold and **30.5%** for three months.
+1. **Since launch, no ZiG product available at launch held its US-dollar value.** From 8 Apr 2024 to 30 Sep 2026, ZiG cash lost **49.4%** in US-dollar terms. A return index at the top quoted 3-month deposit rate still lost **36.1%** (36.7% if each 3-month term locks its rate). One day, the 27 Sep 2024 devaluation (−42.6%), drives most of the loss.
+2. **Since January 2025, ZiG term deposits at the top quoted rate have beaten the US Treasury bill; savings accounts have not.** The top-rate 3-month index gained **+16.1%** in US-dollar terms over 21 months (+14.8% with locked 3-month terms). In 2026 it beat the Treasury bill by **4.4 points a year** (3.6 with locked terms), while ZiG savings trailed it by **3.6 points**.
+3. **Converting US dollars into ZiG for short holds does not clear the hurdle at today's rates.** Someone who already earns ZiG needs about **7.0%** a year (effective) to match the Treasury bill. Someone who converts US dollars in and back out pays a 4.9% round trip, so needs **12.4%** for a one-year hold and **30.6%** for three months. The top 3-month rate, 13.9% quoted (14.6% effective), clears the one-year hurdle but not the shorter ones.
 
 Full write-up: [Research report](docs/research-report.md) (questions, data, method, four findings with charts, implications, limitations, sources) and the [Business Requirements Document](docs/BRD.md) (requirements, KPI definitions, data lineage, risks, recommendations, acceptance criteria).
 
@@ -58,7 +58,11 @@ Run from the repository root, which serves as the run folder (`raw/`, `clean/`, 
 ## Limits and next steps
 - Deposit rates are the lowest and highest rates banks quoted, not averages weighted by volume.
 - Taxes, fees, the transfer tax and street exchange rates are not included.
+- The 3-month deposit figures are a return index at the published rates (rate re-read monthly, monthly compounding), not observed investor returns. `results/result_sensitivity.csv` repeats them with locked 3-month terms.
+- Simulation results are conditional on a model fitted to 21 calm months; the 90-day loss windows overlap and are not independent.
 - The RBZ's new 90-day ZiG bill has been running for only four months.
 - Next steps: add the RBZ's later bill auction results and bank-level deposit rates, and refresh monthly.
+
+**Revision, 14 Nov 2026:** after an external review, the break-even formula was corrected (hurdles rose by 0.07 to 0.09 points), the stress test is now stated as a shortfall in ending wealth, and several labels were qualified. Details are in the [report's revision note](docs/research-report.md#revision-note-14-november-2026).
 
 All figures are analysis, not investment advice.

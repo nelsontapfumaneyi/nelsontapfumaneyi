@@ -63,7 +63,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'3-month deposit (max), Jan 2025 to Sep 2026 (%)'"
+                  "Value": "'3-month index (top rate), Jan 2025 to Sep 2026 (%)'"
                 }
               }
             }

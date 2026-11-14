@@ -30,9 +30,16 @@ def sc(text):
     return float(scen[scen.scenario == text]["p50"].iloc[0])
 
 
+sensdf = pd.read_csv(R / "result_sensitivity.csv")
+
+
+def sens(inst, measure):
+    return float(sensdf[(sensdf.instrument == inst) & (sensdf.measure == measure)].locked_terms.iloc[0])
+
+
 def mc(text):
     row = scen[scen.scenario == text].iloc[0]
-    return row.p5, row.p50, row.p95, row.assumptions.split("P(excess<0)=")[1]
+    return row.p5, row.p50, row.p95, row.assumptions.split("P(behind T-bill)=")[1]
 
 
 F = "P0 full window"; Y26 = "P4 2026 to Sep"; S25 = "P5 since 2025 (Jan 2025 to Sep 2026)"; Y25 = "P3 2025"
@@ -42,24 +49,25 @@ rows = [
     ("BQ1", "ZiG cash lost about half its USD value from launch (2024-04-08) to 2026-09-30",
      s("ZWG_cash", F), "% USD-adjusted", "High: exact calculation from RBZ daily rates; matches independent SQL",
      "Official mid rate; parallel-market rate not modelled"),
-    ("BQ1", "Even the best-paying ZiG 3-month deposit lost over a third of its USD value since launch",
-     s("ZWG_3m_deposit_max", F), "% USD-adjusted", "High (rates are the top of quoted ranges)",
-     "Monthly-accrual approximation of 3-month rollovers; quoted max rates, not volume-weighted"),
+    ("BQ1", "A return index at the top quoted ZiG 3-month deposit rate lost over a third of its USD value since launch",
+     s("ZWG_3m_deposit_max", F), "% USD-adjusted", "High for the index; it is a hypothetical strategy, not observed investor returns",
+     f"Rate reset monthly, monthly compounding; locked 3-month terms give {sens('ZWG_3m_deposit_max', 'USD-adjusted return, P0 full window (%)'):.2f}%; quoted max rates, not volume-weighted"),
     ("BQ1", "FX effect since launch (same for every ZiG product) in log points; interest offsets at most 23 log points",
      float(pd.read_csv(R / "result_bridge.csv").query("step=='ZWG_cash: FX effect (log pts)'").amount.iloc[0]),
      "log pts", "High: bridge check row = 0", "Log decomposition; % equivalents in result_bridge.csv"),
     ("BQ1", "Real (ZWG CPI) return on ZiG cash, May 2024-Sep 2026", real_cum("ZWG_cash", "real_zwg_return_pct"), "% real",
      "High", "April 2024 excluded (CPI base month); 4 imputed CPI months flagged"),
-    ("BQ1", "Since Jan 2025 the ZiG 3-month deposit (max rate) earned a positive USD-adjusted return",
-     s("ZWG_3m_deposit_max", S25), "% USD-adjusted over 21 months", "High", "Excludes conversion costs"),
+    ("BQ1", "Since Jan 2025 the return index at the top quoted 3-month rate gained in USD terms",
+     s("ZWG_3m_deposit_max", S25), "% USD-adjusted over 21 months", "High for the index",
+     f"Locked 3-month terms give {sens('ZWG_3m_deposit_max', 'USD-adjusted return, P5 since 2025 (Jan 2025 to Sep 2026) (%)'):.2f}%; excludes conversion costs"),
     ("BQ1", "USD cash held in Zimbabwe lost real value too (ZIMSTAT USD CPI), May 2024-Sep 2026",
      real_cum("USD_cash", "usd_adjusted_real_return_pct"), "% real", "High", "Zimbabwe USD CPI, not US CPI"),
-    ("BQ2", "2026 (to Sep): ZiG 3-month deposit max beat the US 3-month T-bill",
+    ("BQ2", "2026 (to Sep): the top-rate 3-month index beat the US 3-month T-bill",
      s("ZWG_3m_deposit_max", Y26, "spread_vs_tbill_ann_pp"), "pp p.a.", "Medium: 9-month window",
-     "Before conversion costs; T-bill as international USD benchmark"),
+     f"Locked 3-month terms give {sens('ZWG_3m_deposit_max', 'spread vs T-bill, P4 2026 to Sep (pp p.a.)'):.2f} pp; before conversion costs"),
     ("BQ2", "2026 (to Sep): ZiGDTDF 90-day (10.98%) beat the T-bill since its 4 June 2026 launch",
      s("ZWG_ZiGDTDF_90d", Y26, "spread_vs_tbill_ann_pp"), "pp p.a.", "Low: 118 days; ZiG firmed slightly in the window",
-     "Inaugural auction rate held constant; later auction results not available"),
+     "10.98% = weighted average of allotted bids (10%-25%); reinvested at the same rate after the first 90-day maturity; later auction results not available"),
     ("BQ2", "2026 (to Sep): ZiG savings (max quoted rate) lagged the T-bill",
      s("ZWG_savings_max", Y26, "spread_vs_tbill_ann_pp"), "pp p.a.", "Medium", "Quoted max savings rate"),
     ("BQ2", "2025: ZiG 3-month deposit max beat the T-bill; savings did not",
@@ -77,12 +85,12 @@ rows = [
     ("BQ3", "Required yield for a USD holder who converts for 3 months",
      sc(f"required ZiG yield | {c_lab} | 2026 realised depreciation | hold 3 months"), "% p.a.", "Medium",
      "Conversion cost dominates short holds"),
-    ("BQ3", "Chance an 11% ZiGDTDF beats the T-bill over 12 months, already-ZiG holder (Monte Carlo, calm regime)",
-     100 - 100 * float(mc("MC excess return vs T-bill | ZWG_ZiGDTDF_90d (10.98%) | 12m | no conversion")[3]), "% probability",
-     "Low-Medium: normal FX moves fitted to 21 calm months", "Excludes devaluation jumps; see stress row"),
-    ("BQ3", "Stress: a repeat of the 27 Sep 2024 devaluation inside a 12-month hold of ZiGDTDF",
-     sc("stress: 27-Sep-2024 devaluation repeats within a 12m hold | ZWG_ZiGDTDF_90d (10.98%)"), "% vs T-bill",
-     "Scenario, not a forecast", "One-off -42.6% move as on 27 Sep 2024"),
+    ("BQ3", "Share of simulated 12-month paths in which ZiGDTDF at 10.98% ends ahead of the T-bill, already-ZiG holder (fitted calm-month model)",
+     100 - 100 * float(mc("MC relative wealth vs T-bill | ZWG_ZiGDTDF_90d (10.98%) | 12m | no conversion")[3]), "% of simulated paths",
+     "Low: conditional on a normal model fitted to 21 calm months; not a real-world probability", "Excludes devaluation jumps; see stress row"),
+    ("BQ3", "Stress: a repeat of the 27 Sep 2024 devaluation inside a 12-month hold of ZiGDTDF leaves ending wealth below the T-bill alternative by",
+     sc("stress: 27-Sep-2024 devaluation repeats within a 12m hold | ZWG_ZiGDTDF_90d (10.98%)"), "% relative wealth vs T-bill",
+     "Scenario, not a forecast", "One-off -42.6% move as on 27 Sep 2024; percentage-point difference in result_scenarios.csv"),
     ("BQ4", "Share of 90-day windows since 2025 in which ZiG cash lost USD value",
      rl("ZWG_cash", 90, since, "share_loss_pct"), "% of windows", "High", f"{int(rl('ZWG_cash', 90, since, 'windows'))} overlapping windows"),
     ("BQ4", "Share of 90-day windows since 2025 in which the 3-month deposit (max) lost USD value",

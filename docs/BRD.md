@@ -6,13 +6,13 @@ Nov 13, 2026 · Nelson Mwerenga
 
 Holding ZiG cash from launch (2024-04-08) to 2026-09-30 lost 49.4% of its USD value. The 27 Sep 2024 devaluation (13.9987 to 24.3902 ZWG per USD, a 42.6% loss) caused most of it.
 
-Since January 2025 the result has reversed for term deposits. The best-quoted ZiG 3-month deposit earned +16.1% in USD terms over 21 months (8.9% a year), against 4.1% a year on the US 3-month T-bill. ZiG savings accounts and idle ZiG cash still trailed USD.
+Since January 2025 the result has reversed for term deposits. A return index at the best-quoted ZiG 3-month deposit rate gained +16.1% in USD terms over 21 months (8.9% a year; +14.8% if each 3-month term locks its rate), against 4.1% a year on the US 3-month T-bill. ZiG savings accounts and idle ZiG cash still trailed USD.
 
-The decision rule is a required ZiG yield. A holder who already earns ZiG needs about 6.9% a year to match the T-bill at the 2026 depreciation pace. A USD holder converting for 12 months needs 12.4%, and for 3 months 30.5%, because the RBZ bid-ask round trip costs 4.9%.
+The decision rule is a required ZiG yield. A holder who already earns ZiG needs an effective 6.95% a year to match the T-bill at the 2026 depreciation pace. A USD holder converting for 12 months needs 12.43%, and for 3 months 30.63%, because the RBZ bid-ask round trip costs 4.9%.
 
-The tail risk is a repeat devaluation. A 42.6% move inside a 12-month ZiGDTDF hold would leave the holder 40.5% behind the T-bill.
+The tail risk is a repeat devaluation. A 42.6% move inside a 12-month ZiGDTDF hold would leave ending wealth 38.6% below the T-bill alternative.
 
-All figures are USD-adjusted, before tax and before bank fees, from the UMFDOP run of 2026-11-13 (result_findings.csv rows 0, 4, 12, 13, 14, 16).
+All figures are USD-adjusted, before tax and before bank fees, from the UMFDOP run of 2026-11-13 (result_findings.csv rows 0, 4, 12, 13, 14, 16), revised on 2026-11-14 after an external review corrected the required-yield formula and the stress-test units.
 
 ## Business problem
 
@@ -56,12 +56,12 @@ Three of four hypotheses held; the fourth (fewer than 20% of 90-day windows lose
 
 | ID | Question | Answer | Key figure | Hypothesis | Confidence |
 | --- | --- | --- | --- | --- | --- |
-| BQ1 | What did each ZiG product return since launch, nominal, real and in USD? | Every ZiG product lost over 30% in USD; the FX effect (−68.1 log pts) swamped interest (at most +23 log pts). Since Jan 2025 interest-bearing products turned positive. | Cash −49.39%; best 3-month deposit −36.09%; 3-month max since Jan 2025 +16.08%; ZiG cash real −49.56% | H1 and H1b supported | High |
-| BQ2 | What spread did ZiG products earn over the US T-bill by sub-period? | Every product trailed before the devaluation. In 2025 and 2026 the 3-month deposit at the top rate beat the T-bill; savings did not. | 2026 to Sep: 3-month max +4.39 pp; ZiGDTDF +8.76 pp (118 days); savings max −3.56 pp. 2025: 3-month max +5.18 pp | H2 supported | Medium (2026 is 9 months) |
-| BQ3 | What ZiG yield beats USD, given depreciation, holding period and conversion cost? | Holders already earning ZiG need 6.88%; converting USD holders need 12.36% for 12 months and 30.54% for 3 months. | 77.9% chance an 11% ZiGDTDF beats the T-bill over 12 months (calm regime); −40.45% vs T-bill under a repeat devaluation | Supported (brief estimate 6.7 / 12.2 / 30.5%) | Medium |
+| BQ1 | What did each ZiG product return since launch, nominal, real and in USD? | Every ZiG product available at launch lost over 30% in USD; the FX effect (−68.1 log pts) swamped interest (at most +23 log pts). Since Jan 2025 interest-bearing products turned positive. | Cash −49.39%; top-rate 3-month index −36.09%; that index since Jan 2025 +16.08% (+14.83% with locked terms); ZiG cash real −49.56% | H1 and H1b supported | High |
+| BQ2 | What spread did ZiG products earn over the US T-bill by sub-period? | Every product trailed before the devaluation. In 2025 and 2026 the 3-month index at the top rate beat the T-bill; savings did not. | 2026 to Sep: 3-month max +4.39 pp (+3.63 with locked terms); ZiGDTDF +8.76 pp (118 days); savings max −3.56 pp. 2025: 3-month max +5.18 pp | H2 supported | Medium (2026 is 9 months) |
+| BQ3 | What ZiG yield beats USD, given depreciation, holding period and conversion cost? | Holders already earning ZiG need an effective 6.95%; converting USD holders need 12.43% for 12 months and 30.63% for 3 months. | ZiGDTDF ends ahead of the T-bill in 80.0% of simulated 12-month paths (fitted calm-month model, not a real-world probability); a repeat devaluation leaves ending wealth 38.59% below the T-bill | Supported (brief estimate 6.7 / 12.2 / 30.5%) | Medium |
 | BQ4 | How often does a 90-day ZiG holding lose USD value, and how big is the tail? | Losses remain common for cash and savings since 2025, but are shallow; the full-window tail is the devaluation. | Share of losing 90-day windows since 2025: cash 40.69%, savings max 33.21%, 3-month min 27.01%, 3-month max 17.34%, ZiGDTDF 0% (29 windows). Worst since 2025: −5.96% (cash); worst overall: −52.01% | H4 rejected for cash, savings and 3-month min; supported for 3-month max | High |
 
-Sources: result_findings.csv rows 0–20, result_metrics.csv rows 27–32, result_rolling.csv.
+Sources: result_findings.csv rows 0–20, result_metrics.csv rows 26–31, result_rolling.csv.
 
 ## Requirements
 
@@ -91,7 +91,7 @@ R_{USD} = (1 + R_{ZWG}) \times \frac{S_{start}}{S_{end}} - 1
 ```
 
 ```latex
-y_{required} = \frac{(1 + r_{USD})(1 + e)}{(1 - c)^{1/T}} - 1
+y_{required} = \frac{1 + r_{USD}}{(1 - e)(1 - c)^{1/T}} - 1
 ```
 
 | KPI | Definition | Unit | Source |
@@ -102,12 +102,12 @@ y_{required} = \frac{(1 + r_{USD})(1 + e)}{(1 - c)^{1/T}} - 1
 | Cumulative USD index | Value of USD 100 placed on 2024-04-08, tracked monthly | index | result_returns_monthly |
 | Spread vs T-bill | Annualised USD-adjusted return minus the annualised T-bill return over the same dates | pp p.a. | result_subperiods |
 | T-bill yield | FRED DTB3 discount rate converted to bond-equivalent yield: 365d / (360 − 91d) | % p.a. | stg / core us_benchmark |
-| Required ZiG yield | Second formula: r_USD = T-bill yield (4.15%), e = annualised depreciation (2.62%), c = round-trip cost, T = years held | % p.a. | result_scenarios |
+| Required ZiG yield | Second formula, effective annual: r_USD = T-bill yield (4.15%), e = annual loss in the ZiG's USD value (2.62%), c = round-trip cost, T = years held; rates on offer are converted to effective annual before comparison | % p.a. | result_scenarios |
 | Round-trip conversion cost | 1 − bid / ask on the RBZ interbank rate; 4.88% at the latest date | % | run_parameters |
 | Interest and FX effects | Log bridge: ln(1 + R_USD) = ln(1 + R_ZWG) + ln(S_start / S_end) | log pts | result_bridge |
 | Loss-window share | Share of overlapping 30- or 90-day windows ending with a USD-adjusted loss | % of windows | result_rolling |
 | Maximum drawdown | Largest peak-to-trough fall in the daily USD value | % | result_rolling |
-| Probability of beating the T-bill | Share of 10,000 Monte Carlo paths (seed 42; normal monthly log FX, μ = −0.0018, σ = 0.0160) where the ZiG holding ends ahead | % | result_scenarios |
+| Share of simulated paths ahead of the T-bill | Share of 10,000 paths (seed 42; normal monthly log FX, μ = −0.0018, σ = 0.0160; each product compounds at its term) where the ZiG holding ends ahead; conditional on the model, not a real-world probability | % | result_scenarios |
 
 ## Data sources and lineage
 
@@ -154,9 +154,9 @@ The largest risk to the conclusions is cost: excluded taxes and wider retail spr
 | --- | --- | --- | --- |
 | IMTT (2%), withholding tax on interest and bank fees not modelled | USD-adjusted returns and spreads are overstated, most for short holds | Stated on every finding; required-yield formula takes any cost c | High for converters |
 | Retail FX spreads wider than the RBZ interbank bid-ask (4.88%) | Required yields for converters are understated | Scenario rows by conversion case | Medium |
-| Bank deposit rates are quoted min and max ranges, not volume-weighted | True average returns sit between the min and max lines | Both bounds reported for savings and 3-month deposits | Medium |
-| ZiGDTDF history is 118 days; inaugural 10.98% held constant | 2026 ZiGDTDF spread (+8.76 pp) has low confidence | Confidence marked Low; later auction results listed as an open question | Medium |
-| Monte Carlo assumes normal monthly FX moves fitted to 21 calm months | 77.9% success probability ignores devaluation jumps | Separate stress row: repeat of the −42.6% move gives −40.45% vs T-bill | Medium |
+| Bank deposit rates are quoted min and max ranges, not volume-weighted | True average returns probably sit between the min and max lines, but Table 8.2 shows savings minimums above maximums in Dec 2024, Jan 2025 and May 2026 | Both bounds reported for savings and 3-month deposits; anomalies flagged; the 3-month series is a return index, with a locked-term check in result_sensitivity.csv | Medium |
+| ZiGDTDF history is 118 days; 10.98% (weighted average of accepted bids, range 10–25%) held constant and reinvested after the first maturity | 2026 ZiGDTDF spread (+8.76 pp) has low confidence | Confidence marked Low; later auction results listed as an open question | Medium |
+| Monte Carlo assumes normal monthly FX moves fitted to 21 calm months | The 80.0% share of paths is conditional on the model and ignores devaluation jumps | Separate stress row: a repeat of the −42.6% move leaves ending wealth 38.59% below the T-bill | Medium |
 | Parallel-market rate excluded | Realisable USD value may be lower than the official-rate result | Scope note; sensitivity offered (premium 16–21%) | Medium |
 | 4 CPI months imputed from month-on-month rates | Real returns for those months are estimates | is_imputed flag in core and mart | Low |
 | 33 business days with no RBZ or FCB rate (25 are public holidays) | Daily returns use the last official rate | Carried-forward flag in `mart.v_fx_daily`; FCB = RBZ on 7 of 7 overlap days | Low |
@@ -167,12 +167,12 @@ The largest risk to the conclusions is cost: excluded taxes and wider retail spr
 
 The analyst's recommendations follow from the results; they are decision rules, not investment advice for any named client.
 
-1. **Treasurers already holding ZiG:** do not leave surplus ZiG idle or in savings accounts. Place it where the yield clears 6.88% a year, which in Sep 2026 meant the upper end of 3-month deposits (13.88% max) or ZiGDTDF (10.98%).
-2. **USD holders considering conversion:** convert only for holds of 12 months or more and at yields above 12.36%. No current ZiG product clears the 30.54% hurdle for a 3-month hold.
-3. **Size the devaluation tail before committing:** a repeat of the 27 Sep 2024 move inside a 12-month hold leaves ZiGDTDF 40.45% behind the T-bill. Cap ZiG exposure at what the business can lose on that scale.
+1. **Treasurers already holding ZiG:** do not leave surplus ZiG idle or in savings accounts. Place it where the effective yield clears 6.95% a year, which in Sep 2026 meant the upper end of 3-month deposits (13.88% quoted, 14.62% effective) or ZiGDTDF (10.98% quoted, 11.44% effective).
+2. **USD holders considering conversion:** at today's rates, of the holds tested only a 12-month conversion at the top 3-month rate (14.62% effective) clears the 12.43% hurdle. No current ZiG product clears the 30.63% hurdle for a 3-month hold.
+3. **Size the devaluation tail before committing:** a repeat of the 27 Sep 2024 move inside a 12-month hold leaves ZiGDTDF ending wealth 38.59% below the T-bill alternative. Cap ZiG exposure at what the business can lose on that scale.
 4. **Banks:** the top quoted savings rate (4.71%) sits below the 5% RBZ savings minimum reported for 2026 and trailed the T-bill by 3.56 pp. Pricing savings at or above the floor is the cheapest way to retain ZiG balances.
-5. **RBZ and Treasury:** the conversion spread matters more than the curve for short holds. Halving the 4.88% round trip cuts the 3-month hurdle from 30.54% to 17.97% and the 12-month hurdle from 12.36% to 9.55% (sandbox calculation, run_parameters).
-6. **Re-run monthly:** refresh rates, CPI and ZiGDTDF auction results, and re-check the 6.88% already-ZiG threshold against the latest depreciation pace.
+5. **RBZ and Treasury:** the conversion spread matters more than the curve for short holds. Halving the 4.88% round trip cuts the 3-month hurdle from 30.63% to 18.05% and the 12-month hurdle from 12.43% to 9.62% (sandbox calculation, run_parameters).
+6. **Re-run monthly:** refresh rates, CPI and ZiGDTDF auction results, and re-check the 6.95% already-ZiG threshold against the latest depreciation pace.
 
 ## Acceptance criteria
 
@@ -181,11 +181,11 @@ All eight criteria are met. The Power BI report and the Tableau workbook both ti
 | ID | Criterion | Evidence | Status |
 | --- | --- | --- | --- |
 | AC-01 | All database validation queries and negative tests pass | 40 of 40 (`03_validate.sql`, `04_negative_tests.sql`), approved at Step 3 | Met |
-| AC-02 | Return engine matches an independent SQL calculation and the brief's tie-outs | result_metrics rows 0–8, all within rounding | Met |
-| AC-03 | Browser dashboard KPI cards equal result_findings (difference 0) | 8 of 8 cards read from the live page on 2026-11-13; data files byte-identical to the Agent 4 results | Met |
-| AC-04 | Browser dashboard passes its automated layout and data check | Check passed at 2026-11-13 20:33 UTC, after the last page edit | Met |
-| AC-05 | Power BI build ties out on all 10 tie-out KPIs | 10 of 10 read from the built report `ZiG Returns.pbip` (Summary and FX pages), difference 0 | Met |
-| AC-06 | Tableau story ties out on all 10 tie-out KPIs | 10 of 10 read from `ZiG Returns.twb` (sheets T1 to T3), difference 0; not yet published to Tableau Public | Met |
+| AC-02 | Return engine matches an independent SQL calculation and the brief's tie-outs | result_metrics rows 0–7, all within rounding; the brief's required-yield tie-outs were replaced by an identity check after the 2026-11-14 correction | Met |
+| AC-03 | Browser dashboard KPI cards equal result_findings (difference 0) | 8 of 8 cards read from the live page on 2026-11-13; on 2026-11-14 the findings and scenarios files were replaced and are byte-identical to the revised results (SHA-256 checked), so the two changed cards read 6.95 and 12.43 | Met |
+| AC-04 | Browser dashboard passes its automated layout and data check | Check passed at 2026-11-13 20:33 UTC; the page wording was edited on 2026-11-14, so the check reruns the next time the page is opened | Met |
+| AC-05 | Power BI build ties out on all 10 tie-out KPIs | 10 of 10 read from the built report `ZiG Returns.pbip` (Summary and FX pages), difference 0; re-tied 2026-11-14 after refresh (rows 12 and 13 read 6.95 and 12.43) | Met |
+| AC-06 | Tableau story ties out on all 10 tie-out KPIs | 10 of 10 read from `ZiG Returns.twb` (sheets T1 to T3), difference 0; re-tied 2026-11-14 (T1 rows 12 and 13 read 6.95 and 12.43); not yet published to Tableau Public | Met |
 | AC-07 | Only public data is published | Sources are RBZ, ZIMSTAT, IMF, FRED and press reports; no client data | Met |
 | AC-08 | Every number in this BRD cites a result file and row or a register fact | Citations in each section | Met |
 

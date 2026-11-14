@@ -24,11 +24,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Rate Sep 2026 ZiGDTDF %"
+                  "Property": "Effective Rate ZiGDTDF %"
                 }
               },
-              "queryRef": "_Measures.Rate Sep 2026 ZiGDTDF %",
-              "nativeQueryRef": "Rate Sep 2026 ZiGDTDF %"
+              "queryRef": "_Measures.Effective Rate ZiGDTDF %",
+              "nativeQueryRef": "Effective Rate ZiGDTDF %"
             }
           ]
         }
@@ -63,7 +63,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'On offer: ZiGDTDF 90-day bill (%)'"
+                  "Value": "'ZiGDTDF 90-day, effective %'"
                 }
               }
             }

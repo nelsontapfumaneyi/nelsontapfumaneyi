@@ -1,21 +1,21 @@
 question_id,finding,number,unit,confidence,limits
 BQ1,ZiG cash lost about half its USD value from launch (2024-04-08) to 2026-09-30,-49.39,% USD-adjusted,High: exact calculation from RBZ daily rates; matches independent SQL,Official mid rate; parallel-market rate not modelled
-BQ1,Even the best-paying ZiG 3-month deposit lost over a third of its USD value since launch,-36.09,% USD-adjusted,High (rates are the top of quoted ranges),"Monthly-accrual approximation of 3-month rollovers; quoted max rates, not volume-weighted"
+BQ1,A return index at the top quoted ZiG 3-month deposit rate lost over a third of its USD value since launch,-36.09,% USD-adjusted,"High for the index; it is a hypothetical strategy, not observed investor returns","Rate reset monthly, monthly compounding; locked 3-month terms give -36.70%; quoted max rates, not volume-weighted"
 BQ1,FX effect since launch (same for every ZiG product) in log points; interest offsets at most 23 log points,-68.1,log pts,High: bridge check row = 0,Log decomposition; % equivalents in result_bridge.csv
 BQ1,"Real (ZWG CPI) return on ZiG cash, May 2024-Sep 2026",-49.56,% real,High,April 2024 excluded (CPI base month); 4 imputed CPI months flagged
-BQ1,Since Jan 2025 the ZiG 3-month deposit (max rate) earned a positive USD-adjusted return,16.08,% USD-adjusted over 21 months,High,Excludes conversion costs
+BQ1,Since Jan 2025 the return index at the top quoted 3-month rate gained in USD terms,16.08,% USD-adjusted over 21 months,High for the index,Locked 3-month terms give 14.83%; excludes conversion costs
 BQ1,"USD cash held in Zimbabwe lost real value too (ZIMSTAT USD CPI), May 2024-Sep 2026",-15.26,% real,High,"Zimbabwe USD CPI, not US CPI"
-BQ2,2026 (to Sep): ZiG 3-month deposit max beat the US 3-month T-bill,4.39,pp p.a.,Medium: 9-month window,Before conversion costs; T-bill as international USD benchmark
-BQ2,2026 (to Sep): ZiGDTDF 90-day (10.98%) beat the T-bill since its 4 June 2026 launch,8.76,pp p.a.,Low: 118 days; ZiG firmed slightly in the window,Inaugural auction rate held constant; later auction results not available
+BQ2,2026 (to Sep): the top-rate 3-month index beat the US 3-month T-bill,4.39,pp p.a.,Medium: 9-month window,Locked 3-month terms give 3.63 pp; before conversion costs
+BQ2,2026 (to Sep): ZiGDTDF 90-day (10.98%) beat the T-bill since its 4 June 2026 launch,8.76,pp p.a.,Low: 118 days; ZiG firmed slightly in the window,10.98% = weighted average of allotted bids (10%-25%); reinvested at the same rate after the first 90-day maturity; later auction results not available
 BQ2,2026 (to Sep): ZiG savings (max quoted rate) lagged the T-bill,-3.56,pp p.a.,Medium,Quoted max savings rate
 BQ2,2025: ZiG 3-month deposit max beat the T-bill; savings did not,5.18,pp p.a.,High,Calendar 2025
 BQ2,"Pre-devaluation (Apr-Sep 2024) every ZiG product trailed the T-bill, even before the devaluation",-6.28,pp p.a.,High,5.5-month window
 BQ2,ZiG depreciation in 2026 to 30 Sep (matches Bloomberg's 'almost 3%'; 2.1% to 12 Nov),3.04,% vs USD,High,RBZ mid rate
-BQ3,Required ZiG yield to match the T-bill for holders who already earn ZiG (2026 depreciation pace),6.88,% p.a.,Medium: assumes 2026 depreciation pace continues,e=2.62% p.a. to 13 Nov; r=4.15%
-BQ3,Required yield for a USD holder who converts for 12 months (pays the RBZ bid-ask round trip),12.36,% p.a.,Medium,Round trip 4.88% at RBZ interbank bid/ask; retail spreads may be wider; IMTT excluded
-BQ3,Required yield for a USD holder who converts for 3 months,30.54,% p.a.,Medium,Conversion cost dominates short holds
-BQ3,"Chance an 11% ZiGDTDF beats the T-bill over 12 months, already-ZiG holder (Monte Carlo, calm regime)",77.9,% probability,Low-Medium: normal FX moves fitted to 21 calm months,Excludes devaluation jumps; see stress row
-BQ3,Stress: a repeat of the 27 Sep 2024 devaluation inside a 12-month hold of ZiGDTDF,-40.45,% vs T-bill,"Scenario, not a forecast",One-off -42.6% move as on 27 Sep 2024
+BQ3,Required ZiG yield to match the T-bill for holders who already earn ZiG (2026 depreciation pace),6.95,% p.a.,Medium: assumes 2026 depreciation pace continues,e=2.62% p.a. to 13 Nov; r=4.15%
+BQ3,Required yield for a USD holder who converts for 12 months (pays the RBZ bid-ask round trip),12.43,% p.a.,Medium,Round trip 4.88% at RBZ interbank bid/ask; retail spreads may be wider; IMTT excluded
+BQ3,Required yield for a USD holder who converts for 3 months,30.63,% p.a.,Medium,Conversion cost dominates short holds
+BQ3,"Share of simulated 12-month paths in which ZiGDTDF at 10.98% ends ahead of the T-bill, already-ZiG holder (fitted calm-month model)",80.0,% of simulated paths,Low: conditional on a normal model fitted to 21 calm months; not a real-world probability,Excludes devaluation jumps; see stress row
+BQ3,Stress: a repeat of the 27 Sep 2024 devaluation inside a 12-month hold of ZiGDTDF leaves ending wealth below the T-bill alternative by,-38.59,% relative wealth vs T-bill,"Scenario, not a forecast",One-off -42.6% move as on 27 Sep 2024; percentage-point difference in result_scenarios.csv
 BQ4,Share of 90-day windows since 2025 in which ZiG cash lost USD value,40.69,% of windows,High,548 overlapping windows
 BQ4,Share of 90-day windows since 2025 in which the 3-month deposit (max) lost USD value,17.34,% of windows,High,Overlapping windows; quoted max rate
 BQ4,"Worst 90-day USD-adjusted loss since 2025, ZiG cash (window starting 2026-04-10)",-5.96,%,High,Driven by the May 2026 move (-5.9% in the month)

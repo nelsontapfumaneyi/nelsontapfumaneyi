@@ -63,7 +63,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'3-month deposit (max): same measure (%)'"
+                  "Value": "'3-month index (top rate): same measure (%)'"
                 }
               }
             }

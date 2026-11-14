@@ -180,7 +180,7 @@ p3, l3, i3, v3 = inst("subperiod", "none", "nk"), inst(LBL, "none", "nk"), inst(
 sheets.append(("S3 Spreads", worksheet("S3 Spreads", "subperiods", [v3], [p3, l3], "Bar", [p3, l3, i3, v3],
                                        filters=[(p3, ["P1 pre-devaluation", "P3 2025", "P4 2026 to Sep"]),
                                                 (i3, ["ZWG_cash", "ZWG_savings_max", "ZWG_3m_deposit_max", "ZWG_ZiGDTDF_90d"])],
-                                       color=l3, label=v3, title="Since 2025, ZiG 3-month deposits beat the US T-bill; savings did not (pp a year)")))
+                                       color=l3, label=v3, title="Since 2025, the top-rate 3-month index beat the US T-bill; savings did not (pp a year)")))
 # S4 Break-even
 h4, c4, k4, e4, v4 = inst("hold_months", "none", "ok"), inst("conversion_case", "none", "nk"), inst("kind", "none", "nk"), inst("depreciation_case", "none", "nk"), inst("p50", "sum", "qk")
 sheets.append(("S4 Break-even", worksheet("S4 Break-even", "scenarios", [v4], [h4, c4], "Bar", [h4, c4, k4, e4, v4],

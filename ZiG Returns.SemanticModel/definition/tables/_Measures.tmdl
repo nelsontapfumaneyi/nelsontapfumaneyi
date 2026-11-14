@@ -50,6 +50,11 @@ table _Measures
 		displayFolder: Returns
 		lineageTag: 63906ebb-8fde-ea61-2cca-09cfca1b62b6
 
+	measure 'Monthly Return % (one instrument)' = VAR inst = SELECTEDVALUE ( dim_instrument[instrument], "ZWG_cash" ) RETURN CALCULATE ( [Monthly Return %], dim_instrument[instrument] = inst )
+		formatString: 0.00
+		displayFolder: Returns
+		lineageTag: 05e824de-aa81-a09d-e60e-14753318bb44
+
 	measure 'Cumulative USD Index' = VAR lastP = MAX ( returns_monthly[period_date] ) RETURN CALCULATE ( SUM ( returns_monthly[cum_usd_index] ), returns_monthly[period_date] = lastP )
 		formatString: 0.0
 		displayFolder: Returns
@@ -110,20 +115,35 @@ table _Measures
 		displayFolder: Comparisons
 		lineageTag: 45e06c7e-af98-af1d-1097-08269736a589
 
-	measure 'Scenario P5' = CALCULATE ( SUM ( scenarios[p5] ), scenarios[kind] <> "required ZiG yield" )
+	measure 'Scenario P5' = CALCULATE ( SUM ( scenarios[p5] ), KEEPFILTERS ( scenarios[kind] IN {"MC relative wealth vs T-bill", "stress: 27-Sep-2024 devaluation repeats within a 12m hold"} ) )
 		formatString: 0.00
 		displayFolder: Comparisons
 		lineageTag: 39bf63e2-87ab-9832-e2bd-da8c3cda15a2
 
-	measure 'Scenario P50' = CALCULATE ( SUM ( scenarios[p50] ), scenarios[kind] <> "required ZiG yield" )
+	measure 'Scenario P50' = CALCULATE ( SUM ( scenarios[p50] ), KEEPFILTERS ( scenarios[kind] IN {"MC relative wealth vs T-bill", "stress: 27-Sep-2024 devaluation repeats within a 12m hold"} ) )
 		formatString: 0.00
 		displayFolder: Comparisons
 		lineageTag: 95fac62b-13aa-10d9-84ea-2c446747077c
 
-	measure 'Scenario P95' = CALCULATE ( SUM ( scenarios[p95] ), scenarios[kind] <> "required ZiG yield" )
+	measure 'Scenario P95' = CALCULATE ( SUM ( scenarios[p95] ), KEEPFILTERS ( scenarios[kind] IN {"MC relative wealth vs T-bill", "stress: 27-Sep-2024 devaluation repeats within a 12m hold"} ) )
 		formatString: 0.00
 		displayFolder: Comparisons
 		lineageTag: 2771a1c3-ae9a-7cfe-522a-42efa33d046d
+
+	measure 'Effective Rate 3M Deposit Max %' = CALCULATE ( SUM ( scenarios[p50] ), scenarios[kind] = "effective annual rate on offer", scenarios[instrument] = "ZWG_3m_deposit_max" )
+		formatString: 0.00
+		displayFolder: Comparisons
+		lineageTag: 16e7675e-d4a8-b150-5eba-bb16b6bd8022
+
+	measure 'Effective Rate ZiGDTDF %' = CALCULATE ( SUM ( scenarios[p50] ), scenarios[kind] = "effective annual rate on offer", scenarios[instrument] = "ZWG_ZiGDTDF_90d" )
+		formatString: 0.00
+		displayFolder: Comparisons
+		lineageTag: d4bf04fa-ede8-e754-e04e-5e4be094274e
+
+	measure 'Effective Rate Savings Max %' = CALCULATE ( SUM ( scenarios[p50] ), scenarios[kind] = "effective annual rate on offer", scenarios[instrument] = "ZWG_savings_max" )
+		formatString: 0.00
+		displayFolder: Comparisons
+		lineageTag: 0b87310f-0605-f322-1f08-8741afdb4573
 
 	measure 'Loss Window Share %' = SUM ( rolling[share_loss_pct] )
 		formatString: 0.00
@@ -155,11 +175,6 @@ table _Measures
 		displayFolder: Tie-out
 		lineageTag: d4e11ef4-80d4-4d16-23fb-a4a621e466db
 
-	measure 'Monthly Return % (one instrument)' = VAR inst = SELECTEDVALUE ( dim_instrument[instrument], "ZWG_cash" ) RETURN CALCULATE ( [Monthly Return %], dim_instrument[instrument] = inst )
-		formatString: 0.00
-		displayFolder: Returns
-		lineageTag: 05e824de-aa81-a09d-e60e-14753318bb44
-
 	column Value
 		dataType: int64
 		isHidden
@@ -176,4 +191,3 @@ table _Measures
 		source = ROW ( "Value", 0 )
 
 	annotation PBI_Id = 520fff5fe7efe6c47ba6
-

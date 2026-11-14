@@ -10,6 +10,16 @@ Return conventions (stated, not hidden):
 - Real ZWG return deflates by the ZIMSTAT ZWG CPI; USD-adjusted real return deflates by the ZIMSTAT USD CPI.
 - US T-bill: monthly average DTB3 (discount basis) converted to bond-equivalent yield, 91-day bill:
   BEY = 365*d / (360 - 91*d).
+- The 3-month deposit series are hypothetical return indices at the published (RBZ Table 8.2) rates: the rate is
+  re-read every month and interest compounds monthly; no term is locked. result_sensitivity.csv repeats the
+  headline figures with locked 3-month terms (rate fixed at placement, simple interest, reinvested at maturity).
+- ZiGDTDF: 10.98% is the weighted average of allotted bids at the 4 June 2026 auction (accepted bids 10%-25%).
+  Holding it past the first 90-day maturity assumes reinvestment at the same rate.
+
+Revision 2026-11-14 (external review): required yield uses e = annual loss in the USD value of the ZiG, so
+1+y = (1+r)/((1-e)(1-c)^(1/T)) (was (1+r)(1+e)/(1-c)^(1/T), which treats e as growth in ZiG per USD).
+Stress and Monte Carlo results are now relative wealth vs the T-bill, (1+R_zig)/(1+R_tbill)-1, with the
+percentage-point difference kept in the assumptions. Simulated holdings compound at each product's term.
 """
 import math, os, sys
 from datetime import date
@@ -196,7 +206,19 @@ scen = []
 
 
 def required(r, e, c, T):
-    return (1 + r) * (1 + e) / (1 - c) ** (1 / T) - 1
+    """Effective annual ZiG yield y that leaves a ZiG holder level with the T-bill after T years.
+    r = T-bill effective annual rate; e = annual loss in the USD value of the ZiG (S0/S1 = 1-e per year);
+    c = round-trip conversion cost paid once over the hold. Identity: (1+y)^T (1-e)^T (1-c) = (1+r)^T."""
+    return (1 + r) / ((1 - e) * (1 - c) ** (1 / T)) - 1
+
+
+def effective_annual(quoted_pct, term_years):
+    """Effective annual rate of a quoted simple rate paid at the end of each term and reinvested."""
+    return (1 + quoted_pct / 100 * term_years) ** (1 / term_years) - 1
+
+
+TERMS = {"ZWG_ZiGDTDF_90d": 90 / 365, "ZWG_3m_deposit_max": 0.25, "ZWG_3m_deposit_min": 0.25,
+         "ZWG_savings_max": 1 / 12, "ZWG_savings_min": 1 / 12}
 
 
 for c_label, c in (("no conversion (already earns ZiG)", 0.0), (f"RBZ bid-ask round trip {last_rbz.date_key.date()}", c_latest)):
@@ -208,7 +230,16 @@ for c_label, c in (("no conversion (already earns ZiG)", 0.0), (f"RBZ bid-ask ro
                          "assumptions": f"r_usd={r_usd:.4%} (DTB3 BEY Oct 2026); e={e:.4%}; c={c:.4%}; T={T:g}y",
                          "p5": 100 * y, "p50": 100 * y, "p95": 100 * y, "unit": "% p.a."})
 
-# Monte Carlo: excess USD-adjusted return of 11% ZiG paper over the T-bill, calm regime (2025-2026 monthly FX moves)
+for inst, quoted in (("ZWG_3m_deposit_max", float(mi.loc["2026-09", "three_month_max_pct"])),
+                     ("ZWG_ZiGDTDF_90d", DTDF_RATE),
+                     ("ZWG_savings_max", float(mi.loc["2026-09", "savings_max_pct"]))):
+    ea = 100 * effective_annual(quoted, TERMS[inst])
+    scen.append({"question_id": "BQ3", "scenario": f"effective annual rate on offer | {inst}",
+                 "assumptions": f"quoted {quoted:.2f}% simple per term; term {TERMS[inst]:.4f}y; reinvested at the same rate",
+                 "p5": ea, "p50": ea, "p95": ea, "unit": "% p.a. effective"})
+
+# Monte Carlo: USD wealth of ZiG paper relative to the T-bill, calm regime (2025-2026 monthly FX moves).
+# Conditional on the fitted model (normal monthly log moves, no jumps); not a validated real-world probability.
 eom = S[S.index.is_month_end]
 lchg = np.log(eom.shift(1) / eom).dropna()                                      # + = ZWG appreciation
 calm = lchg[lchg.index >= "2025-01-31"]
@@ -217,25 +248,41 @@ mu_m, sd_m = float(calm.mean()), float(calm.std(ddof=1))
 rng = np.random.default_rng(SEED)
 RUNS = 10_000
 mc_rows = []
-for inst, y_pa in (("ZWG_ZiGDTDF_90d (10.98%)", DTDF_RATE / 100), ("ZWG_3m_deposit_max (Sep 2026 13.88%)", float(mi.loc["2026-09", "three_month_max_pct"]) / 100),
-                   ("ZWG_savings_max (Sep 2026 4.71%)", float(mi.loc["2026-09", "savings_max_pct"]) / 100)):
+for inst, key, y_pa in (("ZWG_ZiGDTDF_90d (10.98%)", "ZWG_ZiGDTDF_90d", DTDF_RATE / 100),
+                        ("ZWG_3m_deposit_max (Sep 2026 13.88%)", "ZWG_3m_deposit_max", float(mi.loc["2026-09", "three_month_max_pct"]) / 100),
+                        ("ZWG_savings_max (Sep 2026 4.71%)", "ZWG_savings_max", float(mi.loc["2026-09", "savings_max_pct"]) / 100)):
+    tau = TERMS[key]
     for T_m in (3, 12):
+        growth = (1 + y_pa * tau) ** ((T_m / 12) / tau)                        # rolled at the product's own term
+        tb = (1 + r_usd) ** (T_m / 12)
         for c_label, c in (("no conversion", 0.0), ("with round trip", c_latest)):
             fxlog = rng.normal(mu_m * T_m, sd_m * math.sqrt(T_m), RUNS)
-            usd_ret = (1 + y_pa * T_m / 12) * np.exp(fxlog) * (1 - c) - 1
-            excess = usd_ret - ((1 + r_usd) ** (T_m / 12) - 1)
-            p5, p50, p95 = np.percentile(excess * 100, [5, 50, 95])
-            mc_rows.append({"question_id": "BQ3", "scenario": f"MC excess return vs T-bill | {inst} | {T_m}m | {c_label}",
+            wealth = growth * np.exp(fxlog) * (1 - c)                          # USD wealth per USD-equivalent placed
+            rel = wealth / tb - 1                                               # relative wealth vs T-bill
+            pp = (wealth - 1) - (tb - 1)                                        # percentage-point difference
+            p5, p50, p95 = np.percentile(rel * 100, [5, 50, 95])
+            mc_rows.append({"question_id": "BQ3", "scenario": f"MC relative wealth vs T-bill | {inst} | {T_m}m | {c_label}",
                             "assumptions": f"monthly log FX ~ N({mu_m:.5f}, {sd_m:.5f}) from {len(calm)} months Jan 2025-Sep 2026; "
-                                           f"{RUNS} runs; seed {SEED}; P(excess<0)={np.mean(excess < 0):.3f}",
-                            "p5": p5, "p50": p50, "p95": p95, "unit": "% over holding period"})
+                                           f"{RUNS} runs; seed {SEED}; conditional on this model; "
+                                           f"median pp difference={np.median(pp) * 100:.2f}; P(behind T-bill)={np.mean(rel < 0):.3f}",
+                            "p5": p5, "p50": p50, "p95": p95, "unit": "% relative wealth vs T-bill"})
     # stress: replay of the 27 Sep 2024 one-day move inside a 12-month hold
 dev = float(S[pd.Timestamp("2024-09-26")] / S[pd.Timestamp("2024-09-27")])
-for inst, y_pa in (("ZWG_ZiGDTDF_90d (10.98%)", DTDF_RATE / 100), ("ZWG_3m_deposit_max (13.88%)", float(mi.loc["2026-09", "three_month_max_pct"]) / 100)):
-    v = ((1 + y_pa) * dev - 1) * 100 - 100 * r_usd
+for inst, key, y_pa in (("ZWG_ZiGDTDF_90d (10.98%)", "ZWG_ZiGDTDF_90d", DTDF_RATE / 100),
+                        ("ZWG_3m_deposit_max (13.88%)", "ZWG_3m_deposit_max", float(mi.loc["2026-09", "three_month_max_pct"]) / 100)):
+    zig = (1 + y_pa * TERMS[key]) ** (1 / TERMS[key]) * dev                    # 12-month hold, rolled at its term
+    rel = 100 * (zig / (1 + r_usd) - 1)
+    pp = 100 * ((zig - 1) - r_usd)
+    sub_row = sub[(sub.instrument == key) & (sub.subperiod == "P4 2026 to Sep")].iloc[0]
+    pace = (1 + sub_row.annualised_pct / 100) / (1 + sub_row.tbill_annualised_pct / 100)   # 2026 relative growth p.a.
+    years = math.log(1 / (1 + rel / 100)) / math.log(pace) if pace > 1 else float("nan")
     mc_rows.append({"question_id": "BQ3", "scenario": f"stress: 27-Sep-2024 devaluation repeats within a 12m hold | {inst}",
-                    "assumptions": f"one-off FX factor {dev:.4f} (13.9987 -> 24.3902); no conversion cost",
-                    "p5": v, "p50": v, "p95": v, "unit": "% over holding period vs T-bill"})
+                    "assumptions": f"one-off FX factor {dev:.4f} (13.9987 -> 24.3902); no conversion cost; "
+                                   f"ZiG return {100 * (zig - 1):.2f}%; pp difference vs T-bill {pp:.2f}",
+                    "p5": rel, "p50": rel, "p95": rel, "unit": "% relative wealth vs T-bill"})
+    mc_rows.append({"question_id": "BQ3", "scenario": f"stress recovery: years at the 2026 relative pace to regain the shortfall | {inst}",
+                    "assumptions": f"relative growth p.a. = (1+{sub_row.annualised_pct:.2f}%)/(1+{sub_row.tbill_annualised_pct:.2f}%) (2026 to Sep)",
+                    "p5": years, "p50": years, "p95": years, "unit": "years"})
 scenarios = pd.concat([pd.DataFrame(scen), pd.DataFrame(mc_rows)], ignore_index=True)
 
 # ------------------------------------------------------------------ BQ4 rolling windows
@@ -262,6 +309,46 @@ for name in names:
                  "median_return_pct": None, "best_return_pct": None})
 rolling = pd.DataFrame(roll)
 
+# ------------------------------------------------------------------ robustness: locked 3-month terms (review 2026-11-14)
+def locked_nominal(rate_col, start, end, term_months=3):
+    """ZWG value of 1 ZWG placed at the close of `start` in consecutive 3-month terms. Each term locks the
+    quoted rate of the month it starts in; simple interest accrues by day within the term and is reinvested
+    at maturity. A value inside a term includes accrued interest."""
+    days = pd.date_range(start, end, freq="D")
+    out = np.empty(len(days))
+    t0, principal = pd.Timestamp(start), 1.0
+    mat = t0 + pd.DateOffset(months=term_months)
+    rate = float(mi.loc[t0.strftime("%Y-%m"), rate_col]) / 100
+    for i, d in enumerate(days):
+        if d >= mat:
+            principal *= 1 + rate * (mat - t0).days / 365
+            t0, mat = mat, mat + pd.DateOffset(months=term_months)
+            rate = float(mi.loc[t0.strftime("%Y-%m"), rate_col]) / 100
+        out[i] = principal * (1 + rate * (d - t0).days / 365)
+    return pd.Series(out, index=days)
+
+
+sens = []
+for key, col in (("ZWG_3m_deposit_max", "three_month_max_pct"), ("ZWG_3m_deposit_min", "three_month_min_pct")):
+    for label in ("P0 full window", "P1 pre-devaluation", "P3 2025", "P4 2026 to Sep", "P5 since 2025 (Jan 2025 to Sep 2026)"):
+        d0, d1 = SUBPERIODS[label]
+        nomv = locked_nominal(col, d0, d1)
+        r_locked = nomv.iloc[-1] * float(S[pd.Timestamp(d0)] / S[pd.Timestamp(d1)]) - 1
+        base = sub[(sub.instrument == key) & (sub.subperiod == label)].iloc[0]
+        tb_a = base.tbill_annualised_pct
+        sens.append({"instrument": key, "measure": f"USD-adjusted return, {label} (%)", "index_method": base.usd_adjusted_return_pct,
+                     "locked_terms": 100 * r_locked, "difference": 100 * r_locked - base.usd_adjusted_return_pct})
+        sens.append({"instrument": key, "measure": f"spread vs T-bill, {label} (pp p.a.)", "index_method": base.spread_vs_tbill_ann_pp,
+                     "locked_terms": 100 * ann(r_locked, d0, d1) - tb_a, "difference": 100 * ann(r_locked, d0, d1) - tb_a - base.spread_vs_tbill_ann_pp})
+    # 90-day windows from 2025: a fresh deposit locked at the entry month's rate, valued after 90 days
+    starts = pd.date_range("2025-01-01", pd.Timestamp(END) - pd.Timedelta(days=90), freq="D")
+    rl90 = np.array([(1 + float(mi.loc[d.strftime("%Y-%m"), col]) / 100 * 90 / 365) * float(S[d] / S[d + pd.Timedelta(days=90)]) - 1
+                     for d in starts])
+    idx = [x for x in roll if x["instrument"] == key and x["window_days"] == 90 and x["regime"] == "windows starting 2025-01-01 or later"][0]
+    sens.append({"instrument": key, "measure": "share of 90-day windows since 2025 with a USD loss (%)", "index_method": idx["share_loss_pct"],
+                 "locked_terms": 100 * float((rl90 < 0).mean()), "difference": 100 * float((rl90 < 0).mean()) - idx["share_loss_pct"]})
+sensitivity = pd.DataFrame(sens)
+
 # ------------------------------------------------------------------ validation checks
 def check(name, value, expected, tol):
     return {"question_id": "VAL", "model": "return engine", "metric": name, "value": value, "baseline_value": expected,
@@ -276,9 +363,10 @@ chk = [
     check("ZWG cash USD return 2024-04-08..2026-09-30: daily engine vs independent SQL", 100 * ret(P["ZWG_cash__usd"], START, END), 100 * sql_cash, 1e-9),
     check("Brief tie-out: ZWG cash USD return to 2026-11-12 (brief -48.9%)", round(100 * cash_ext, 1), -48.9, 0.05),
     check("Brief tie-out: ZWG cash USD return 2026 YTD to 12 Nov (brief -2.1%)", round(100 * ytd_ext, 1), -2.1, 0.05),
-    check("Brief tie-out: required yield, no conversion, e=2.49%, r=4.12% (brief 6.7%)", round(100 * required(0.0412, 0.0249, 0, 1), 1), 6.7, 0.05),
-    check("Brief tie-out: required yield, c=4.9%, 12m (brief 12.2%)", round(100 * required(0.0412, 0.0249, 0.049, 1), 1), 12.2, 0.05),
-    check("Brief tie-out: required yield, c=4.9%, 3m (brief 30.5%)", round(100 * required(0.0412, 0.0249, 0.049, 0.25), 1), 30.5, 0.05),
+    check("Required-yield identity: (1+y)^T (1-e)^T (1-c) = (1+r)^T, 3m hold with round trip (max abs diff)",
+          max(abs((1 + required(r_usd, e_2026, c, T)) ** T * (1 - e_2026) ** T * (1 - c) - (1 + r_usd) ** T)
+              for c in (0.0, c_latest) for T in (1 / 12, 0.25, 0.5, 1.0)), 0.0, 1e-12),
+    check("Required yield with no depreciation, cost or hold effect equals the T-bill rate", 100 * required(r_usd, 0, 0, 1), 100 * r_usd, 1e-9),
     check("Bridge check rows: max |effects - total| (log pts)", float(bridge[bridge.step.str.contains("check")].amount.abs().max()), 0.0, 1e-9),
     check("Monthly returns compound to the cumulative index (max abs diff, index pts)",
           float(max(abs(g.sort_values("period").eval("1+usd_adjusted_return_pct/100").prod() * 100 - g.cum_usd_index.iloc[-1])
@@ -299,7 +387,8 @@ for _, r in key.iterrows():
 # ------------------------------------------------------------------ write
 OUT.mkdir(exist_ok=True)
 outputs = {"result_returns_monthly.csv": monthly, "result_bridge.csv": bridge, "result_subperiods.csv": sub,
-           "result_scenarios.csv": scenarios, "result_rolling.csv": rolling, "result_metrics.csv": metrics}
+           "result_scenarios.csv": scenarios, "result_rolling.csv": rolling, "result_metrics.csv": metrics,
+           "result_sensitivity.csv": sensitivity}
 for fn, df in outputs.items():
     df.to_csv(OUT / fn, index=False, float_format="%.6f")
     print(f"{fn}: {len(df)} rows")

@@ -1,0 +1,23 @@
+instrument,measure,index_method,locked_terms,difference
+ZWG_3m_deposit_max,"USD-adjusted return, P0 full window (%)",-36.091123,-36.701854,-0.610731
+ZWG_3m_deposit_max,"spread vs T-bill, P0 full window (pp p.a.)",-20.892983,-21.215651,-0.322668
+ZWG_3m_deposit_max,"USD-adjusted return, P1 pre-devaluation (%)",-0.416440,-0.407039,0.009401
+ZWG_3m_deposit_max,"spread vs T-bill, P1 pre-devaluation (pp p.a.)",-6.277024,-6.257051,0.019973
+ZWG_3m_deposit_max,"USD-adjusted return, P3 2025 (%)",9.427377,8.819721,-0.607656
+ZWG_3m_deposit_max,"spread vs T-bill, P3 2025 (pp p.a.)",5.182568,4.574912,-0.607656
+ZWG_3m_deposit_max,"USD-adjusted return, P4 2026 to Sep (%)",6.079125,5.523341,-0.555784
+ZWG_3m_deposit_max,"spread vs T-bill, P4 2026 to Sep (pp p.a.)",4.386401,3.629063,-0.757338
+ZWG_3m_deposit_max,"USD-adjusted return, P5 since 2025 (Jan 2025 to Sep 2026) (%)",16.079604,14.829227,-1.250377
+ZWG_3m_deposit_max,"spread vs T-bill, P5 since 2025 (Jan 2025 to Sep 2026) (pp p.a.)",4.840430,4.167749,-0.672681
+ZWG_3m_deposit_max,share of 90-day windows since 2025 with a USD loss (%),17.335766,19.343066,2.007299
+ZWG_3m_deposit_min,"USD-adjusted return, P0 full window (%)",-40.851191,-41.089065,-0.237873
+ZWG_3m_deposit_min,"spread vs T-bill, P0 full window (pp p.a.)",-23.458732,-23.590130,-0.131398
+ZWG_3m_deposit_min,"USD-adjusted return, P1 pre-devaluation (%)",-0.693562,-0.659379,0.034183
+ZWG_3m_deposit_min,"spread vs T-bill, P1 pre-devaluation (pp p.a.)",-6.864819,-6.792415,0.072404
+ZWG_3m_deposit_min,"USD-adjusted return, P3 2025 (%)",5.775774,5.517124,-0.258650
+ZWG_3m_deposit_min,"spread vs T-bill, P3 2025 (pp p.a.)",1.530964,1.272315,-0.258650
+ZWG_3m_deposit_min,"USD-adjusted return, P4 2026 to Sep (%)",2.340049,2.248162,-0.091888
+ZWG_3m_deposit_min,"spread vs T-bill, P4 2026 to Sep (pp p.a.)",-0.682620,-0.806416,-0.123796
+ZWG_3m_deposit_min,"USD-adjusted return, P5 since 2025 (Jan 2025 to Sep 2026) (%)",8.250979,7.888889,-0.362090
+ZWG_3m_deposit_min,"spread vs T-bill, P5 since 2025 (Jan 2025 to Sep 2026) (pp p.a.)",0.575841,0.375456,-0.200385
+ZWG_3m_deposit_min,share of 90-day windows since 2025 with a USD loss (%),27.007299,27.189781,0.182482

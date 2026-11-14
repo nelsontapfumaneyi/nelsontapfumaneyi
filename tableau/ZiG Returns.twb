@@ -1420,7 +1420,7 @@
       <layout-options>
         <title>
           <formatted-text>
-            <run bold='true' fontsize='13'>Since 2025, ZiG 3-month deposits beat the US T-bill; savings did not (pp a year)</run>
+            <run bold='true' fontsize='13'>Since 2025, the top-rate 3-month index beat the US T-bill; savings did not (pp a year)</run>
           </formatted-text>
         </title>
       </layout-options>
@@ -1817,9 +1817,9 @@
               <flipboard active-id='5' nav-type='caption' show-nav-arrows='true'>
                 <story-points>
                   <story-point caption='ZiG cash lost about half its US-dollar value from launch to Sep 2026' captured-sheet='S2 Value' id='1' />
-                  <story-point caption='Since 2025, ZiG 3-month deposits beat the US T-bill; savings did not' captured-sheet='S3 Spreads' id='2' />
-                  <story-point caption='Converting US dollars into ZiG only pays on long holds' captured-sheet='S4 Break-even' id='3' />
-                  <story-point caption='ZiG cash lost value in far more 90-day holdings than the best term deposit' captured-sheet='S5 Loss windows' id='4' />
+                  <story-point caption='Since 2025, the top-rate 3-month index beat the US T-bill; savings did not' captured-sheet='S3 Spreads' id='2' />
+                  <story-point caption='At today&apos;s rates, short conversions do not clear the T-bill hurdle' captured-sheet='S4 Break-even' id='3' />
+                  <story-point caption='ZiG cash lost value in far more 90-day windows than the top-rate 3-month index' captured-sheet='S5 Loss windows' id='4' />
                   <story-point caption='Every number, with its source row' captured-sheet='S6 Findings' id='5' />
                 </story-points>
               </flipboard>

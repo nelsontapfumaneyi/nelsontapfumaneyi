@@ -24,11 +24,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Rate Sep 2026 3M Deposit Max %"
+                  "Property": "Effective Rate 3M Deposit Max %"
                 }
               },
-              "queryRef": "_Measures.Rate Sep 2026 3M Deposit Max %",
-              "nativeQueryRef": "Rate Sep 2026 3M Deposit Max %"
+              "queryRef": "_Measures.Effective Rate 3M Deposit Max %",
+              "nativeQueryRef": "Effective Rate 3M Deposit Max %"
             }
           ]
         }
@@ -63,7 +63,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'On offer: 3-month deposit (max) (%)'"
+                  "Value": "'3-month deposit (max), effective %'"
                 }
               }
             }

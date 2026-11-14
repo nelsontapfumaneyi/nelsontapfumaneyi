@@ -24,11 +24,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Rate Sep 2026 Savings Max %"
+                  "Property": "Effective Rate Savings Max %"
                 }
               },
-              "queryRef": "_Measures.Rate Sep 2026 Savings Max %",
-              "nativeQueryRef": "Rate Sep 2026 Savings Max %"
+              "queryRef": "_Measures.Effective Rate Savings Max %",
+              "nativeQueryRef": "Effective Rate Savings Max %"
             }
           ]
         }
@@ -63,7 +63,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'On offer: savings (max), Sep 2026 (%)'"
+                  "Value": "'Savings (max), effective %'"
                 }
               }
             }

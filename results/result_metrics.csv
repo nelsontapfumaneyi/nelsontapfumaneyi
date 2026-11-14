@@ -2,9 +2,8 @@ question_id,model,metric,value,baseline_value,beats_baseline
 VAL,return engine,ZWG cash USD return 2024-04-08..2026-09-30: daily engine vs independent SQL,-49.390405,-49.390405,True
 VAL,return engine,Brief tie-out: ZWG cash USD return to 2026-11-12 (brief -48.9%),-48.9,-48.9,True
 VAL,return engine,Brief tie-out: ZWG cash USD return 2026 YTD to 12 Nov (brief -2.1%),-2.1,-2.1,True
-VAL,return engine,"Brief tie-out: required yield, no conversion, e=2.49%, r=4.12% (brief 6.7%)",6.7,6.7,True
-VAL,return engine,"Brief tie-out: required yield, c=4.9%, 12m (brief 12.2%)",12.2,12.2,True
-VAL,return engine,"Brief tie-out: required yield, c=4.9%, 3m (brief 30.5%)",30.5,30.5,True
+VAL,return engine,"Required-yield identity: (1+y)^T (1-e)^T (1-c) = (1+r)^T, 3m hold with round trip (max abs diff)",0.0,0.0,True
+VAL,return engine,"Required yield with no depreciation, cost or hold effect equals the T-bill rate",4.149215,4.149215,True
 VAL,return engine,Bridge check rows: max |effects - total| (log pts),0.0,0.0,True
 VAL,return engine,"Monthly returns compound to the cumulative index (max abs diff, index pts)",0.0,0.0,True
 VAL,return engine,"Full-month interest = r*days/365 (Sep 2026, 3m max), pct",1.140822,1.140822,True

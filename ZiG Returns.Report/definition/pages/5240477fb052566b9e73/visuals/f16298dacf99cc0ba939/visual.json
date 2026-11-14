@@ -63,7 +63,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'2026: 3-month deposit (max) vs T-bill (pp)'"
+                  "Value": "'2026: 3-month index (top rate) vs T-bill (pp)'"
                 }
               }
             }

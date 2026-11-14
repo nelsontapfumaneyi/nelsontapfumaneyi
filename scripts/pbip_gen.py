@@ -118,9 +118,12 @@ MEASURES = [  # (name, folder, format, DAX)
     ("Spread vs T-bill (chart) pp", "Comparisons", "+0.0;-0.0;0.0", f"CALCULATE ( [Spread vs T-bill pp], KEEPFILTERS ( subperiods[subperiod] IN {{\"P1 pre-devaluation\", \"P3 2025\", \"P4 2026 to Sep\"}} ), KEEPFILTERS ( dim_instrument[instrument] IN {IN4} ) )"),
     ("Required Yield %", "Comparisons", "0.00", "SUM ( scenarios[p50] )"),
     ("Required Yield (chart) %", "Comparisons", "0.0", "CALCULATE ( [Required Yield %], scenarios[kind] = \"required ZiG yield\", scenarios[depreciation_case] = \"2026 realised depreciation\", KEEPFILTERS ( scenarios[hold_months] IN {3, 6, 12} ) )"),
-    ("Scenario P5", "Comparisons", "0.00", "CALCULATE ( SUM ( scenarios[p5] ), scenarios[kind] <> \"required ZiG yield\" )"),
-    ("Scenario P50", "Comparisons", "0.00", "CALCULATE ( SUM ( scenarios[p50] ), scenarios[kind] <> \"required ZiG yield\" )"),
-    ("Scenario P95", "Comparisons", "0.00", "CALCULATE ( SUM ( scenarios[p95] ), scenarios[kind] <> \"required ZiG yield\" )"),
+    ("Scenario P5", "Comparisons", "0.00", "CALCULATE ( SUM ( scenarios[p5] ), KEEPFILTERS ( scenarios[kind] IN {\"MC relative wealth vs T-bill\", \"stress: 27-Sep-2024 devaluation repeats within a 12m hold\"} ) )"),
+    ("Scenario P50", "Comparisons", "0.00", "CALCULATE ( SUM ( scenarios[p50] ), KEEPFILTERS ( scenarios[kind] IN {\"MC relative wealth vs T-bill\", \"stress: 27-Sep-2024 devaluation repeats within a 12m hold\"} ) )"),
+    ("Scenario P95", "Comparisons", "0.00", "CALCULATE ( SUM ( scenarios[p95] ), KEEPFILTERS ( scenarios[kind] IN {\"MC relative wealth vs T-bill\", \"stress: 27-Sep-2024 devaluation repeats within a 12m hold\"} ) )"),
+    ("Effective Rate 3M Deposit Max %", "Comparisons", "0.00", "CALCULATE ( SUM ( scenarios[p50] ), scenarios[kind] = \"effective annual rate on offer\", scenarios[instrument] = \"ZWG_3m_deposit_max\" )"),
+    ("Effective Rate ZiGDTDF %", "Comparisons", "0.00", "CALCULATE ( SUM ( scenarios[p50] ), scenarios[kind] = \"effective annual rate on offer\", scenarios[instrument] = \"ZWG_ZiGDTDF_90d\" )"),
+    ("Effective Rate Savings Max %", "Comparisons", "0.00", "CALCULATE ( SUM ( scenarios[p50] ), scenarios[kind] = \"effective annual rate on offer\", scenarios[instrument] = \"ZWG_savings_max\" )"),
     ("Loss Window Share %", "Comparisons", "0.00", "SUM ( rolling[share_loss_pct] )"),
     ("Loss Share 90d Since 2025 %", "Comparisons", "0.0", "CALCULATE ( [Loss Window Share %], rolling[window_days] = 90, rolling[regime] = \"windows starting 2025-01-01 or later\" )"),
     ("Worst Window Return %", "Comparisons", "0.00", "MIN ( rolling[worst_return_pct] )"),
@@ -235,18 +238,18 @@ wjson(os.path.join(RP, "pages", "pages.json"), {
     "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/pagesMetadata/1.1.0/schema.json",
     "pageOrder": [p for p, _ in PAGES], "activePageName": PAGES[0][0]})
 
-FOOT = "Data as of 2026-11-13. UMFDOP pipeline: RBZ, ZIMSTAT, IMF and FRED data; results from Agent 4 (2026-11-13)."
+FOOT = "Data as of 2026-11-13. UMFDOP pipeline: RBZ, ZIMSTAT, IMF and FRED data; results from Agent 4 (2026-11-13, revised 2026-11-14 after review)."
 # Page 1 Summary
 p = PAGES[0][0]
-textbox(p, "t", "Holding ZiG lost about half its USD value since launch, but ZiG term deposits have beaten USD since 2025", 20, 10, 1240, 50)
+textbox(p, "t", "Holding ZiG lost about half its USD value since launch; since 2025 the top-rate 3-month index has beaten the T-bill", 20, 10, 1240, 50)
 cards = [("ZiG Cash USD Return Since Launch %", "ZiG cash, USD-adjusted, launch to Sep 2026 (%)"),
-         ("3M Deposit Max USD Return Since 2025 %", "3-month deposit (max), Jan 2025 to Sep 2026 (%)"),
-         ("3M Deposit Max Spread 2026 pp", "2026: 3-month deposit (max) vs T-bill (pp)"),
+         ("3M Deposit Max USD Return Since 2025 %", "3-month index (top rate), Jan 2025 to Sep 2026 (%)"),
+         ("3M Deposit Max Spread 2026 pp", "2026: 3-month index (top rate) vs T-bill (pp)"),
          ("Savings Max Spread 2026 pp", "2026: savings (max) vs T-bill (pp)"),
          ("Required Yield Converter 12m %", "Yield needed, converting US$, 12 months (%)"),
          ("Required Yield Already ZiG %", "Yield needed, already holds ZiG (%)"),
          ("ZiG Cash 90d Loss Share Since 2025 %", "ZiG cash: 90-day windows with a loss since 2025 (%)"),
-         ("3M Max 90d Loss Share Since 2025 %", "3-month deposit (max): same measure (%)")]
+         ("3M Max 90d Loss Share Since 2025 %", "3-month index (top rate): same measure (%)")]
 for i, (m, t) in enumerate(cards):
     visual(p, "c" + str(i), "card", 20 + (i % 4) * 312, 64 + (i // 4) * 138, 300, 130, {"Values": [mea(m)]}, ttl=t, objects=CARD_OBJ, z=i + 1)
 visual(p, "tbl", "tableEx", 20, 346, 1240, 334, {"Values": [col("findings", "question_id"), col("findings", "finding"), col("findings", "number"),
@@ -280,21 +283,21 @@ textbox(p, "f", "Source: result_subperiods.csv. " + FOOT, 20, 686, 1240, 28, siz
 
 # Page 4 Break-even
 p = PAGES[3][0]
-textbox(p, "t", "Today's ZiG rates win money already in ZiG, but converting US dollars pays only on long holds", 20, 10, 1240, 50)
+textbox(p, "t", "At today's rates, money already in ZiG clears the hurdle; a 12-month conversion clears it only at the top 3-month rate", 20, 10, 1240, 50)
 visual(p, "rq", "clusteredColumnChart", 20, 70, 840, 330, {"Category": [col("scenarios", "hold_label", True)], "Series": [col("scenarios", "conversion_case")],
        "Y": [mea("Required Yield (chart) %")]}, ttl="ZiG yield needed to match the US T-bill (% a year), 2026 depreciation pace",
        sort=(col("scenarios", "hold_label"), "Ascending"), objects=LABELS, z=1)
-for i, (m, t) in enumerate([("Rate Sep 2026 3M Deposit Max %", "On offer: 3-month deposit (max) (%)"),
-                            ("Rate Sep 2026 ZiGDTDF %", "On offer: ZiGDTDF 90-day bill (%)"),
-                            ("Rate Sep 2026 Savings Max %", "On offer: savings (max), Sep 2026 (%)")]):
+for i, (m, t) in enumerate([("Effective Rate 3M Deposit Max %", "3-month deposit (max), effective %"),
+                            ("Effective Rate ZiGDTDF %", "ZiGDTDF 90-day, effective %"),
+                            ("Effective Rate Savings Max %", "Savings (max), effective %")]):
     visual(p, "r" + str(i), "card", 880, 70 + i * 112, 380, 104, {"Values": [mea(m)]}, ttl=t, objects=CARD_OBJ, z=2 + i)
 visual(p, "mc", "tableEx", 20, 410, 1240, 270, {"Values": [col("scenarios", "scenario"), mea("Scenario P5"), mea("Scenario P50"), mea("Scenario P95")]},
-       ttl="Monte Carlo excess return vs T-bill and stress test (% over the hold)", objects=NO_TOTALS, z=6)
-textbox(p, "f", "Source: result_scenarios.csv, result_returns_monthly.csv. Excludes IMTT, withholding tax and fees. " + FOOT, 20, 686, 1240, 28, size="9pt", bold=False, z=30)
+       ttl="Ending wealth vs the T-bill (%): fitted-model simulation (P5, median, P95) and devaluation stress", objects=NO_TOTALS, z=6)
+textbox(p, "f", "Source: result_scenarios.csv. Rates on offer, Sep 2026, converted to effective annual rates (quoted 13.88%, 10.98%, 4.71%). Excludes IMTT, withholding tax and fees. " + FOOT, 20, 686, 1240, 28, size="9pt", bold=False, z=30)
 
 # Page 5 Risk
 p = PAGES[4][0]
-textbox(p, "t", "Since 2025, ZiG cash lost US-dollar value in far more three-month holdings than the best term deposit", 20, 10, 1240, 50)
+textbox(p, "t", "Since 2025, ZiG cash lost US-dollar value in far more 90-day holdings than the top-rate 3-month index (windows overlap)", 20, 10, 1240, 50)
 visual(p, "ls", "clusteredBarChart", 20, 70, 1240, 300, {"Category": [col("dim_instrument", "label", True)], "Y": [mea("Loss Share 90d Since 2025 %")]},
        ttl="Share of 90-day windows since 2025-01-01 that lost US$ value (%)", objects=LABELS, z=1)
 visual(p, "rt", "tableEx", 20, 380, 1240, 300, {"Values": [col("rolling", "instrument"), col("rolling", "window_days"), col("rolling", "regime"), col("rolling", "windows"),

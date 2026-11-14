@@ -105,7 +105,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Monte Carlo excess return vs T-bill and stress test (% over the hold)'"
+                  "Value": "'Ending wealth vs the T-bill (%): fitted-model simulation (P5, median, P95) and devaluation stress'"
                 }
               }
             }
