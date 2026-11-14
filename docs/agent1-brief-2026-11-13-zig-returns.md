@@ -48,6 +48,8 @@ First-order size (calculations run in Python in the sandbox):
 | BQ3 | What ZiG yield does the new short-term curve need to beat USD at a given expected depreciation e, holding period T (years) and round-trip conversion cost c? | Required yield y = (1 + r_USD)(1 + e) / (1 - c)^(1/T) - 1; break-even depreciation e* | At 2026 values (r = 4.12%, e = 2.5%, c = 4.9%), holders who already earn ZiG need about 6.7%; a USD holder who converts needs about 12% for a 12-month hold and about 30% for a 3-month hold |
 | BQ4 | How often does a 30- or 90-day ZiG holding end with a USD-adjusted loss, and how large is the tail? | Share of rolling windows with a loss; worst 90-day loss; max drawdown | Losses cluster in Sep-Oct 2024; since 2025, under 20% of 90-day windows lose money |
 
+**Revision, 2026-11-14 (after an external review):** the BQ3 formula above is right when e is the annual rise in ZiG per US dollar, as in Section 3 (2.49%), so the hypothesis values stand. Agent 4 measured e as the annual loss in the ZiG's US-dollar value (2.62% to 13 Nov), for which the matching form is y = (1 + r_USD) / ((1 - e)(1 - c)^(1/T)) - 1. Using the first form with that e understated the hurdles slightly; Agent 4's corrected results are 6.95%, 12.43% and 30.63% (Agent 4 pack, Section 6). No register fact changes.
+
 ## 5. Data discovery log
 | Need | Candidates searched (tier) | Chosen | Why | Fallbacks |
 |---|---|---|---|---|
