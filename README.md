@@ -34,6 +34,21 @@ The report has five pages, each titled with its finding:
 | Break-even | The ZiG yield needed to match the T-bill, against effective rates on offer |
 | Risk | How often 90-day holdings lost US-dollar value |
 
+![Power BI Summary page: eight headline KPIs and every finding with its confidence](docs/img/powerbi-1-summary.jpg)
+
+<details>
+<summary>The other four pages</summary>
+
+![Power BI FX and value page: the RBZ official rate and the US$ value of 100 placed in each product](docs/img/powerbi-2-fx-and-value.jpg)
+
+![Power BI Versus USD page: annualised gap to the US T-bill by period](docs/img/powerbi-3-versus-usd.jpg)
+
+![Power BI Break-even page: the ZiG yield needed to match the T-bill against effective rates on offer](docs/img/powerbi-4-break-even.jpg)
+
+![Power BI Risk page: share of 90-day holdings that lost US-dollar value](docs/img/powerbi-5-risk.jpg)
+
+</details>
+
 Open `ZiG Returns.pbip` in Power BI Desktop to explore it (see Reproduce, step 6).
 
 ## What is in this repository
@@ -46,7 +61,7 @@ Open `ZiG Returns.pbip` in Power BI Desktop to explore it (see Reproduce, step 6
 | `results/` | Analysis result tables (returns, sub-period spreads, scenarios, rolling windows, findings) |
 | `clean/` | Cleaned source data: RBZ daily rates, IMF rates, RBZ deposit rates, ZIMSTAT CPI, FRED benchmarks, RBZ events, plus reconciliation files |
 | `sql/` | PostgreSQL 18 schema (temporal keys, constraints), load scripts, 34 validation checks and 6 negative tests, analysis extract |
-| `scripts/` | Python: fetch the source files, clean them, run the analysis, prepare the BI data, and generate the Power BI and Tableau files |
+| `scripts/` | Python: fetch the source files, clean them, run the analysis, prepare the BI data, generate the Power BI and Tableau files, and polish the Tableau workbook (`polish_twb.py`) |
 | `docs/` | The research report (with its charts in `docs/img/`), the research brief, one hand-off pack per pipeline stage, and the BRD |
 
 ## Method

@@ -31,9 +31,9 @@ DS = {
                 ("share_below_tbill_pct", "d"), ("worst_return_pct", "d"), ("worst_window_start", "t"), ("median_return_pct", "d"),
                 ("best_return_pct", "d")],
 }
-LABEL_CALC = ('CASE [instrument] WHEN "ZWG_cash" THEN "ZiG cash" WHEN "ZWG_savings_min" THEN "ZiG savings (min)" '
-              'WHEN "ZWG_savings_max" THEN "ZiG savings (max)" WHEN "ZWG_3m_deposit_min" THEN "ZiG 3-month deposit (min)" '
-              'WHEN "ZWG_3m_deposit_max" THEN "ZiG 3-month deposit (max)" WHEN "ZWG_ZiGDTDF_90d" THEN "RBZ ZiGDTDF 90-day bill" '
+LABEL_CALC = ('CASE [instrument] WHEN "ZWG_cash" THEN "ZiG cash" WHEN "ZWG_savings_min" THEN "ZiG savings (lowest rate)" '
+              'WHEN "ZWG_savings_max" THEN "ZiG savings (top rate)" WHEN "ZWG_3m_deposit_min" THEN "ZiG 3-month index (lowest rate)" '
+              'WHEN "ZWG_3m_deposit_max" THEN "ZiG 3-month index (top rate)" WHEN "ZWG_ZiGDTDF_90d" THEN "RBZ ZiGDTDF 90-day bill" '
               'WHEN "USD_cash" THEN "USD cash" WHEN "USD_tbill_3m" THEN "US 3-month T-bill" END')
 CALCS = {  # datasource -> [(internal name, caption, datatype, role, type, formula)]
     "fx_daily": [("Calculation_rate_20261113", "Rate on 2026-11-13", "real", "measure", "quantitative",

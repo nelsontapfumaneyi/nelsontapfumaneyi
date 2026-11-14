@@ -274,6 +274,7 @@
         </metadata-records>
       </connection>
       <aliases enabled='yes' />
+<column caption='ZiG per US$ (RBZ official mid rate)' datatype='real' name='[zwg_per_usd]' role='measure' type='quantitative' />
       <column caption='Rate on 2026-11-13' datatype='real' default-format='n#,##0.0000;-#,##0.0000' name='[Calculation_rate_20261113]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='IF [date_key] = #2026-11-13# THEN [zwg_per_usd] END' />
       </column>
@@ -537,15 +538,47 @@
         </metadata-records>
       </connection>
       <aliases enabled='yes' />
+<column caption='US$ value of 100 placed on 8 Apr 2024' datatype='real' name='[cum_usd_index]' role='measure' type='quantitative' />
       <column caption='ZiG cash index Sep 2026' datatype='real' name='[Calculation_cash_index_sep26]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='IF [instrument] = &quot;ZWG_cash&quot; AND [period] = &quot;2026-09&quot; THEN [cum_usd_index] END' />
       </column>
-      <column caption='Instrument Label' datatype='string' name='[Calculation_instrument_label]' role='dimension' type='nominal'>
-        <calculation class='tableau' formula='CASE [instrument] WHEN &quot;ZWG_cash&quot; THEN &quot;ZiG cash&quot; WHEN &quot;ZWG_savings_min&quot; THEN &quot;ZiG savings (min)&quot; WHEN &quot;ZWG_savings_max&quot; THEN &quot;ZiG savings (max)&quot; WHEN &quot;ZWG_3m_deposit_min&quot; THEN &quot;ZiG 3-month deposit (min)&quot; WHEN &quot;ZWG_3m_deposit_max&quot; THEN &quot;ZiG 3-month deposit (max)&quot; WHEN &quot;ZWG_ZiGDTDF_90d&quot; THEN &quot;RBZ ZiGDTDF 90-day bill&quot; WHEN &quot;USD_cash&quot; THEN &quot;USD cash&quot; WHEN &quot;USD_tbill_3m&quot; THEN &quot;US 3-month T-bill&quot; END' />
+      <column caption='Product' datatype='string' name='[Calculation_instrument_label]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='CASE [instrument] WHEN &quot;ZWG_cash&quot; THEN &quot;ZiG cash&quot; WHEN &quot;ZWG_savings_min&quot; THEN &quot;ZiG savings (lowest rate)&quot; WHEN &quot;ZWG_savings_max&quot; THEN &quot;ZiG savings (top rate)&quot; WHEN &quot;ZWG_3m_deposit_min&quot; THEN &quot;ZiG 3-month index (lowest rate)&quot; WHEN &quot;ZWG_3m_deposit_max&quot; THEN &quot;ZiG 3-month index (top rate)&quot; WHEN &quot;ZWG_ZiGDTDF_90d&quot; THEN &quot;RBZ ZiGDTDF 90-day bill&quot; WHEN &quot;USD_cash&quot; THEN &quot;USD cash&quot; WHEN &quot;USD_tbill_3m&quot; THEN &quot;US 3-month T-bill&quot; END' />
       </column>
       <column caption='Migrated Data' datatype='table' name='[__tableau_internal_object_id__].[Migrated Data]' role='measure' type='quantitative' />
-      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
-      <semantic-values>
+      <column-instance column='[Calculation_instrument_label]' derivation='None' name='[none:Calculation_instrument_label:nk]' pivot='key' type='nominal' />
+<layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <style>
+<style-rule element='mark'>
+<encoding attr='color' field='[none:Calculation_instrument_label:nk]' type='palette'>
+<map to='#d9480f'>
+<bucket>&quot;ZiG cash&quot;</bucket>
+</map>
+<map to='#1e8a55'>
+<bucket>&quot;ZiG 3-month index (top rate)&quot;</bucket>
+</map>
+<map to='#8cc4a3'>
+<bucket>&quot;ZiG 3-month index (lowest rate)&quot;</bucket>
+</map>
+<map to='#6c7a73'>
+<bucket>&quot;ZiG savings (top rate)&quot;</bucket>
+</map>
+<map to='#a3ada8'>
+<bucket>&quot;ZiG savings (lowest rate)&quot;</bucket>
+</map>
+<map to='#7b5ea7'>
+<bucket>&quot;RBZ ZiGDTDF 90-day bill&quot;</bucket>
+</map>
+<map to='#2563b0'>
+<bucket>&quot;US 3-month T-bill&quot;</bucket>
+</map>
+<map to='#a3ada8'>
+<bucket>&quot;USD cash&quot;</bucket>
+</map>
+</encoding>
+</style-rule>
+</style>
+<semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
       </semantic-values>
       <object-graph>
@@ -814,12 +847,45 @@
         </metadata-records>
       </connection>
       <aliases enabled='yes' />
-      <column caption='Instrument Label' datatype='string' name='[Calculation_instrument_label]' role='dimension' type='nominal'>
-        <calculation class='tableau' formula='CASE [instrument] WHEN &quot;ZWG_cash&quot; THEN &quot;ZiG cash&quot; WHEN &quot;ZWG_savings_min&quot; THEN &quot;ZiG savings (min)&quot; WHEN &quot;ZWG_savings_max&quot; THEN &quot;ZiG savings (max)&quot; WHEN &quot;ZWG_3m_deposit_min&quot; THEN &quot;ZiG 3-month deposit (min)&quot; WHEN &quot;ZWG_3m_deposit_max&quot; THEN &quot;ZiG 3-month deposit (max)&quot; WHEN &quot;ZWG_ZiGDTDF_90d&quot; THEN &quot;RBZ ZiGDTDF 90-day bill&quot; WHEN &quot;USD_cash&quot; THEN &quot;USD cash&quot; WHEN &quot;USD_tbill_3m&quot; THEN &quot;US 3-month T-bill&quot; END' />
+<column caption='Period' datatype='string' name='[subperiod]' role='dimension' type='nominal' />
+<column caption='Gap to the US T-bill (percentage points a year)' datatype='real' name='[spread_vs_tbill_ann_pp]' role='measure' type='quantitative' />
+      <column caption='Product' datatype='string' name='[Calculation_instrument_label]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='CASE [instrument] WHEN &quot;ZWG_cash&quot; THEN &quot;ZiG cash&quot; WHEN &quot;ZWG_savings_min&quot; THEN &quot;ZiG savings (lowest rate)&quot; WHEN &quot;ZWG_savings_max&quot; THEN &quot;ZiG savings (top rate)&quot; WHEN &quot;ZWG_3m_deposit_min&quot; THEN &quot;ZiG 3-month index (lowest rate)&quot; WHEN &quot;ZWG_3m_deposit_max&quot; THEN &quot;ZiG 3-month index (top rate)&quot; WHEN &quot;ZWG_ZiGDTDF_90d&quot; THEN &quot;RBZ ZiGDTDF 90-day bill&quot; WHEN &quot;USD_cash&quot; THEN &quot;USD cash&quot; WHEN &quot;USD_tbill_3m&quot; THEN &quot;US 3-month T-bill&quot; END' />
       </column>
       <column caption='Migrated Data' datatype='table' name='[__tableau_internal_object_id__].[Migrated Data]' role='measure' type='quantitative' />
-      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
-      <semantic-values>
+      <column-instance column='[Calculation_instrument_label]' derivation='None' name='[none:Calculation_instrument_label:nk]' pivot='key' type='nominal' />
+<layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <style>
+<style-rule element='mark'>
+<encoding attr='color' field='[none:Calculation_instrument_label:nk]' type='palette'>
+<map to='#d9480f'>
+<bucket>&quot;ZiG cash&quot;</bucket>
+</map>
+<map to='#1e8a55'>
+<bucket>&quot;ZiG 3-month index (top rate)&quot;</bucket>
+</map>
+<map to='#8cc4a3'>
+<bucket>&quot;ZiG 3-month index (lowest rate)&quot;</bucket>
+</map>
+<map to='#6c7a73'>
+<bucket>&quot;ZiG savings (top rate)&quot;</bucket>
+</map>
+<map to='#a3ada8'>
+<bucket>&quot;ZiG savings (lowest rate)&quot;</bucket>
+</map>
+<map to='#7b5ea7'>
+<bucket>&quot;RBZ ZiGDTDF 90-day bill&quot;</bucket>
+</map>
+<map to='#2563b0'>
+<bucket>&quot;US 3-month T-bill&quot;</bucket>
+</map>
+<map to='#a3ada8'>
+<bucket>&quot;USD cash&quot;</bucket>
+</map>
+</encoding>
+</style-rule>
+</style>
+<semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
       </semantic-values>
       <object-graph>
@@ -1077,6 +1143,9 @@
         </metadata-records>
       </connection>
       <aliases enabled='yes' />
+<column caption='Months held' datatype='integer' name='[hold_months]' role='measure' type='quantitative' />
+<column caption='Conversion' datatype='string' name='[conversion_case]' role='dimension' type='nominal' />
+<column caption='ZiG yield needed to match the T-bill (% a year)' datatype='real' name='[p50]' role='measure' type='quantitative' />
       <column caption='Migrated Data' datatype='table' name='[__tableau_internal_object_id__].[Migrated Data]' role='measure' type='quantitative' />
       <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
       <semantic-values>
@@ -1291,12 +1360,44 @@
         </metadata-records>
       </connection>
       <aliases enabled='yes' />
-      <column caption='Instrument Label' datatype='string' name='[Calculation_instrument_label]' role='dimension' type='nominal'>
-        <calculation class='tableau' formula='CASE [instrument] WHEN &quot;ZWG_cash&quot; THEN &quot;ZiG cash&quot; WHEN &quot;ZWG_savings_min&quot; THEN &quot;ZiG savings (min)&quot; WHEN &quot;ZWG_savings_max&quot; THEN &quot;ZiG savings (max)&quot; WHEN &quot;ZWG_3m_deposit_min&quot; THEN &quot;ZiG 3-month deposit (min)&quot; WHEN &quot;ZWG_3m_deposit_max&quot; THEN &quot;ZiG 3-month deposit (max)&quot; WHEN &quot;ZWG_ZiGDTDF_90d&quot; THEN &quot;RBZ ZiGDTDF 90-day bill&quot; WHEN &quot;USD_cash&quot; THEN &quot;USD cash&quot; WHEN &quot;USD_tbill_3m&quot; THEN &quot;US 3-month T-bill&quot; END' />
+<column caption='Share of 90-day windows with a US$ loss (%)' datatype='real' name='[share_loss_pct]' role='measure' type='quantitative' />
+      <column caption='Product' datatype='string' name='[Calculation_instrument_label]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='CASE [instrument] WHEN &quot;ZWG_cash&quot; THEN &quot;ZiG cash&quot; WHEN &quot;ZWG_savings_min&quot; THEN &quot;ZiG savings (lowest rate)&quot; WHEN &quot;ZWG_savings_max&quot; THEN &quot;ZiG savings (top rate)&quot; WHEN &quot;ZWG_3m_deposit_min&quot; THEN &quot;ZiG 3-month index (lowest rate)&quot; WHEN &quot;ZWG_3m_deposit_max&quot; THEN &quot;ZiG 3-month index (top rate)&quot; WHEN &quot;ZWG_ZiGDTDF_90d&quot; THEN &quot;RBZ ZiGDTDF 90-day bill&quot; WHEN &quot;USD_cash&quot; THEN &quot;USD cash&quot; WHEN &quot;USD_tbill_3m&quot; THEN &quot;US 3-month T-bill&quot; END' />
       </column>
       <column caption='Migrated Data' datatype='table' name='[__tableau_internal_object_id__].[Migrated Data]' role='measure' type='quantitative' />
-      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
-      <semantic-values>
+      <column-instance column='[Calculation_instrument_label]' derivation='None' name='[none:Calculation_instrument_label:nk]' pivot='key' type='nominal' />
+<layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <style>
+<style-rule element='mark'>
+<encoding attr='color' field='[none:Calculation_instrument_label:nk]' type='palette'>
+<map to='#d9480f'>
+<bucket>&quot;ZiG cash&quot;</bucket>
+</map>
+<map to='#1e8a55'>
+<bucket>&quot;ZiG 3-month index (top rate)&quot;</bucket>
+</map>
+<map to='#8cc4a3'>
+<bucket>&quot;ZiG 3-month index (lowest rate)&quot;</bucket>
+</map>
+<map to='#6c7a73'>
+<bucket>&quot;ZiG savings (top rate)&quot;</bucket>
+</map>
+<map to='#a3ada8'>
+<bucket>&quot;ZiG savings (lowest rate)&quot;</bucket>
+</map>
+<map to='#7b5ea7'>
+<bucket>&quot;RBZ ZiGDTDF 90-day bill&quot;</bucket>
+</map>
+<map to='#2563b0'>
+<bucket>&quot;US 3-month T-bill&quot;</bucket>
+</map>
+<map to='#a3ada8'>
+<bucket>&quot;USD cash&quot;</bucket>
+</map>
+</encoding>
+</style-rule>
+</style>
+<semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
       </semantic-values>
       <object-graph>
@@ -1342,7 +1443,7 @@
             <column-instance column='[zwg_per_usd]' derivation='Avg' name='[avg:zwg_per_usd:qk]' pivot='key' type='quantitative' />
             <column datatype='date' name='[date_key]' role='dimension' type='ordinal' />
             <column-instance column='[date_key]' derivation='Day-Trunc' name='[tdy:date_key:qk]' pivot='key' type='quantitative' />
-            <column datatype='real' name='[zwg_per_usd]' role='measure' type='quantitative' />
+            <column caption='ZiG per US$ (RBZ official mid rate)' datatype='real' name='[zwg_per_usd]' role='measure' type='quantitative' />
           </datasource-dependencies>
           <aggregation value='true' />
         </view>
@@ -1374,10 +1475,10 @@
             <datasource caption='returns_monthly' name='federated.returns_monthly' />
           </datasources>
           <datasource-dependencies datasource='federated.returns_monthly'>
-            <column caption='Instrument Label' datatype='string' name='[Calculation_instrument_label]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='CASE [instrument] WHEN &quot;ZWG_cash&quot; THEN &quot;ZiG cash&quot; WHEN &quot;ZWG_savings_min&quot; THEN &quot;ZiG savings (min)&quot; WHEN &quot;ZWG_savings_max&quot; THEN &quot;ZiG savings (max)&quot; WHEN &quot;ZWG_3m_deposit_min&quot; THEN &quot;ZiG 3-month deposit (min)&quot; WHEN &quot;ZWG_3m_deposit_max&quot; THEN &quot;ZiG 3-month deposit (max)&quot; WHEN &quot;ZWG_ZiGDTDF_90d&quot; THEN &quot;RBZ ZiGDTDF 90-day bill&quot; WHEN &quot;USD_cash&quot; THEN &quot;USD cash&quot; WHEN &quot;USD_tbill_3m&quot; THEN &quot;US 3-month T-bill&quot; END' />
+            <column caption='Product' datatype='string' name='[Calculation_instrument_label]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='CASE [instrument] WHEN &quot;ZWG_cash&quot; THEN &quot;ZiG cash&quot; WHEN &quot;ZWG_savings_min&quot; THEN &quot;ZiG savings (lowest rate)&quot; WHEN &quot;ZWG_savings_max&quot; THEN &quot;ZiG savings (top rate)&quot; WHEN &quot;ZWG_3m_deposit_min&quot; THEN &quot;ZiG 3-month index (lowest rate)&quot; WHEN &quot;ZWG_3m_deposit_max&quot; THEN &quot;ZiG 3-month index (top rate)&quot; WHEN &quot;ZWG_ZiGDTDF_90d&quot; THEN &quot;RBZ ZiGDTDF 90-day bill&quot; WHEN &quot;USD_cash&quot; THEN &quot;USD cash&quot; WHEN &quot;USD_tbill_3m&quot; THEN &quot;US 3-month T-bill&quot; END' />
             </column>
-            <column datatype='real' name='[cum_usd_index]' role='measure' type='quantitative' />
+            <column caption='US$ value of 100 placed on 8 Apr 2024' datatype='real' name='[cum_usd_index]' role='measure' type='quantitative' />
             <column datatype='string' name='[instrument]' role='dimension' type='nominal' />
             <column-instance column='[Calculation_instrument_label]' derivation='None' name='[none:Calculation_instrument_label:nk]' pivot='key' type='nominal' />
             <column-instance column='[instrument]' derivation='None' name='[none:instrument:nk]' pivot='key' type='nominal' />
@@ -1408,7 +1509,14 @@
             <mark class='Line' />
             <encodings>
               <color column='[federated.returns_monthly].[none:Calculation_instrument_label:nk]' />
+<text column='[federated.returns_monthly].[none:Calculation_instrument_label:nk]' />
             </encodings>
+<style>
+<style-rule element='mark'>
+<format attr='mark-labels-show' value='true' />
+<format attr='mark-labels-cull' value='true' />
+</style-rule>
+</style>
           </pane>
         </panes>
         <rows>[federated.returns_monthly].[sum:cum_usd_index:qk]</rows>
@@ -1430,15 +1538,15 @@
             <datasource caption='subperiods' name='federated.subperiods' />
           </datasources>
           <datasource-dependencies datasource='federated.subperiods'>
-            <column caption='Instrument Label' datatype='string' name='[Calculation_instrument_label]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='CASE [instrument] WHEN &quot;ZWG_cash&quot; THEN &quot;ZiG cash&quot; WHEN &quot;ZWG_savings_min&quot; THEN &quot;ZiG savings (min)&quot; WHEN &quot;ZWG_savings_max&quot; THEN &quot;ZiG savings (max)&quot; WHEN &quot;ZWG_3m_deposit_min&quot; THEN &quot;ZiG 3-month deposit (min)&quot; WHEN &quot;ZWG_3m_deposit_max&quot; THEN &quot;ZiG 3-month deposit (max)&quot; WHEN &quot;ZWG_ZiGDTDF_90d&quot; THEN &quot;RBZ ZiGDTDF 90-day bill&quot; WHEN &quot;USD_cash&quot; THEN &quot;USD cash&quot; WHEN &quot;USD_tbill_3m&quot; THEN &quot;US 3-month T-bill&quot; END' />
+            <column caption='Product' datatype='string' name='[Calculation_instrument_label]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='CASE [instrument] WHEN &quot;ZWG_cash&quot; THEN &quot;ZiG cash&quot; WHEN &quot;ZWG_savings_min&quot; THEN &quot;ZiG savings (lowest rate)&quot; WHEN &quot;ZWG_savings_max&quot; THEN &quot;ZiG savings (top rate)&quot; WHEN &quot;ZWG_3m_deposit_min&quot; THEN &quot;ZiG 3-month index (lowest rate)&quot; WHEN &quot;ZWG_3m_deposit_max&quot; THEN &quot;ZiG 3-month index (top rate)&quot; WHEN &quot;ZWG_ZiGDTDF_90d&quot; THEN &quot;RBZ ZiGDTDF 90-day bill&quot; WHEN &quot;USD_cash&quot; THEN &quot;USD cash&quot; WHEN &quot;USD_tbill_3m&quot; THEN &quot;US 3-month T-bill&quot; END' />
             </column>
             <column datatype='string' name='[instrument]' role='dimension' type='nominal' />
             <column-instance column='[Calculation_instrument_label]' derivation='None' name='[none:Calculation_instrument_label:nk]' pivot='key' type='nominal' />
             <column-instance column='[instrument]' derivation='None' name='[none:instrument:nk]' pivot='key' type='nominal' />
             <column-instance column='[subperiod]' derivation='None' name='[none:subperiod:nk]' pivot='key' type='nominal' />
-            <column datatype='real' name='[spread_vs_tbill_ann_pp]' role='measure' type='quantitative' />
-            <column datatype='string' name='[subperiod]' role='dimension' type='nominal' />
+            <column caption='Gap to the US T-bill (percentage points a year)' datatype='real' name='[spread_vs_tbill_ann_pp]' role='measure' type='quantitative' />
+            <column caption='Period' datatype='string' name='[subperiod]' role='dimension' type='nominal' />
             <column-instance column='[spread_vs_tbill_ann_pp]' derivation='Sum' name='[sum:spread_vs_tbill_ann_pp:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.subperiods].[none:instrument:nk]'>
@@ -1500,15 +1608,15 @@
             <datasource caption='scenarios' name='federated.scenarios' />
           </datasources>
           <datasource-dependencies datasource='federated.scenarios'>
-            <column datatype='string' name='[conversion_case]' role='dimension' type='nominal' />
+            <column caption='Conversion' datatype='string' name='[conversion_case]' role='dimension' type='nominal' />
             <column datatype='string' name='[depreciation_case]' role='dimension' type='nominal' />
-            <column datatype='integer' name='[hold_months]' role='measure' type='quantitative' />
+            <column caption='Months held' datatype='integer' name='[hold_months]' role='measure' type='quantitative' />
             <column datatype='string' name='[kind]' role='dimension' type='nominal' />
             <column-instance column='[conversion_case]' derivation='None' name='[none:conversion_case:nk]' pivot='key' type='nominal' />
             <column-instance column='[depreciation_case]' derivation='None' name='[none:depreciation_case:nk]' pivot='key' type='nominal' />
             <column-instance column='[hold_months]' derivation='None' name='[none:hold_months:ok]' pivot='key' type='ordinal' />
             <column-instance column='[kind]' derivation='None' name='[none:kind:nk]' pivot='key' type='nominal' />
-            <column datatype='real' name='[p50]' role='measure' type='quantitative' />
+            <column caption='ZiG yield needed to match the T-bill (% a year)' datatype='real' name='[p50]' role='measure' type='quantitative' />
             <column-instance column='[p50]' derivation='Sum' name='[sum:p50:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.scenarios].[none:depreciation_case:nk]'>
@@ -1573,15 +1681,15 @@
             <datasource caption='rolling' name='federated.rolling' />
           </datasources>
           <datasource-dependencies datasource='federated.rolling'>
-            <column caption='Instrument Label' datatype='string' name='[Calculation_instrument_label]' role='dimension' type='nominal'>
-              <calculation class='tableau' formula='CASE [instrument] WHEN &quot;ZWG_cash&quot; THEN &quot;ZiG cash&quot; WHEN &quot;ZWG_savings_min&quot; THEN &quot;ZiG savings (min)&quot; WHEN &quot;ZWG_savings_max&quot; THEN &quot;ZiG savings (max)&quot; WHEN &quot;ZWG_3m_deposit_min&quot; THEN &quot;ZiG 3-month deposit (min)&quot; WHEN &quot;ZWG_3m_deposit_max&quot; THEN &quot;ZiG 3-month deposit (max)&quot; WHEN &quot;ZWG_ZiGDTDF_90d&quot; THEN &quot;RBZ ZiGDTDF 90-day bill&quot; WHEN &quot;USD_cash&quot; THEN &quot;USD cash&quot; WHEN &quot;USD_tbill_3m&quot; THEN &quot;US 3-month T-bill&quot; END' />
+            <column caption='Product' datatype='string' name='[Calculation_instrument_label]' role='dimension' type='nominal'>
+              <calculation class='tableau' formula='CASE [instrument] WHEN &quot;ZWG_cash&quot; THEN &quot;ZiG cash&quot; WHEN &quot;ZWG_savings_min&quot; THEN &quot;ZiG savings (lowest rate)&quot; WHEN &quot;ZWG_savings_max&quot; THEN &quot;ZiG savings (top rate)&quot; WHEN &quot;ZWG_3m_deposit_min&quot; THEN &quot;ZiG 3-month index (lowest rate)&quot; WHEN &quot;ZWG_3m_deposit_max&quot; THEN &quot;ZiG 3-month index (top rate)&quot; WHEN &quot;ZWG_ZiGDTDF_90d&quot; THEN &quot;RBZ ZiGDTDF 90-day bill&quot; WHEN &quot;USD_cash&quot; THEN &quot;USD cash&quot; WHEN &quot;USD_tbill_3m&quot; THEN &quot;US 3-month T-bill&quot; END' />
             </column>
             <column datatype='string' name='[instrument]' role='dimension' type='nominal' />
             <column-instance column='[Calculation_instrument_label]' derivation='None' name='[none:Calculation_instrument_label:nk]' pivot='key' type='nominal' />
             <column-instance column='[regime]' derivation='None' name='[none:regime:nk]' pivot='key' type='nominal' />
             <column-instance column='[window_days]' derivation='None' name='[none:window_days:ok]' pivot='key' type='ordinal' />
             <column datatype='string' name='[regime]' role='dimension' type='nominal' />
-            <column datatype='real' name='[share_loss_pct]' role='measure' type='quantitative' />
+            <column caption='Share of 90-day windows with a US$ loss (%)' datatype='real' name='[share_loss_pct]' role='measure' type='quantitative' />
             <column-instance column='[share_loss_pct]' derivation='Sum' name='[sum:share_loss_pct:qk]' pivot='key' type='quantitative' />
             <column datatype='integer' name='[window_days]' role='measure' type='quantitative' />
           </datasource-dependencies>
@@ -1741,7 +1849,7 @@
             </column>
             <column datatype='date' name='[date_key]' role='dimension' type='ordinal' />
             <column-instance column='[Calculation_rate_20261113]' derivation='Sum' name='[sum:Calculation_rate_20261113:qk]' pivot='key' type='quantitative' />
-            <column datatype='real' name='[zwg_per_usd]' role='measure' type='quantitative' />
+            <column caption='ZiG per US$ (RBZ official mid rate)' datatype='real' name='[zwg_per_usd]' role='measure' type='quantitative' />
           </datasource-dependencies>
           <aggregation value='true' />
         </view>
@@ -1779,7 +1887,7 @@
             <column caption='ZiG cash index Sep 2026' datatype='real' name='[Calculation_cash_index_sep26]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='IF [instrument] = &quot;ZWG_cash&quot; AND [period] = &quot;2026-09&quot; THEN [cum_usd_index] END' />
             </column>
-            <column datatype='real' name='[cum_usd_index]' role='measure' type='quantitative' />
+            <column caption='US$ value of 100 placed on 8 Apr 2024' datatype='real' name='[cum_usd_index]' role='measure' type='quantitative' />
             <column datatype='string' name='[instrument]' role='dimension' type='nominal' />
             <column datatype='string' name='[period]' role='dimension' type='nominal' />
             <column-instance column='[Calculation_cash_index_sep26]' derivation='Sum' name='[sum:Calculation_cash_index_sep26:qk]' pivot='key' type='quantitative' />
@@ -2037,7 +2145,12 @@
             <card type='title' />
           </strip>
         </edge>
-      </cards>
+      <edge name='right'>
+<strip size='160'>
+<card pane-specification-id='0' param='[federated.subperiods].[none:Calculation_instrument_label:nk]' type='color' />
+</strip>
+</edge>
+</cards>
       <simple-id uuid='{CC768EBF-E9CD-46D9-A812-9D19FDE3681B}' />
     </window>
     <window class='worksheet' name='S4 Break-even'>
@@ -2060,7 +2173,12 @@
             <card type='title' />
           </strip>
         </edge>
-      </cards>
+      <edge name='right'>
+<strip size='160'>
+<card pane-specification-id='0' param='[federated.scenarios].[none:conversion_case:nk]' type='color' />
+</strip>
+</edge>
+</cards>
       <simple-id uuid='{5C578968-8A3D-40FF-B51A-A52F317E59FE}' />
     </window>
     <window class='worksheet' name='S5 Loss windows'>

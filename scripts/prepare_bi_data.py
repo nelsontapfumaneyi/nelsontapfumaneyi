@@ -69,9 +69,9 @@ if not pd.api.types.is_bool_dtype(fx["is_carried_forward"]):  # psql exports boo
     fx["is_carried_forward"] = fx["is_carried_forward"].astype(str).map({"t": True, "f": False, "True": True, "False": False})
 fx.to_csv(os.path.join(OUT, "fx_daily.csv"), index=False)
 
-pd.DataFrame([("ZWG_cash", "ZiG cash", "ZWG", 1), ("ZWG_savings_min", "ZiG savings (min)", "ZWG", 2),
-              ("ZWG_savings_max", "ZiG savings (max)", "ZWG", 3), ("ZWG_3m_deposit_min", "ZiG 3-month deposit (min)", "ZWG", 4),
-              ("ZWG_3m_deposit_max", "ZiG 3-month deposit (max)", "ZWG", 5), ("ZWG_ZiGDTDF_90d", "RBZ ZiGDTDF 90-day bill", "ZWG", 6),
+pd.DataFrame([("ZWG_cash", "ZiG cash", "ZWG", 1), ("ZWG_savings_min", "ZiG savings (lowest rate)", "ZWG", 2),
+              ("ZWG_savings_max", "ZiG savings (top rate)", "ZWG", 3), ("ZWG_3m_deposit_min", "ZiG 3-month index (lowest rate)", "ZWG", 4),
+              ("ZWG_3m_deposit_max", "ZiG 3-month index (top rate)", "ZWG", 5), ("ZWG_ZiGDTDF_90d", "RBZ ZiGDTDF 90-day bill", "ZWG", 6),
               ("USD_cash", "USD cash", "USD", 7), ("USD_tbill_3m", "US 3-month T-bill", "USD", 8)],
              columns=["instrument", "label", "currency_held", "sort"]).to_csv(os.path.join(OUT, "dim_instrument.csv"), index=False)
 
