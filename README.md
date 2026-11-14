@@ -4,7 +4,7 @@
 
 ![US$100 placed in ZiG cash at launch was worth about US$51 by September 2026](docs/img/fig1-usd-value-by-product.png)
 
-**Explore:** [Full research report](docs/research-report.md) · [Tableau workbook](tableau/ZiG%20Returns.twb) · [Power BI report pages](#power-bi-report) · [Code and SQL](#what-is-in-this-repository) · [Business Requirements Document](docs/BRD.md)
+**Explore:** [Full research report](docs/research-report.md) · [Interactive story on Tableau Public](https://public.tableau.com/app/profile/nelson.mwerenga7376/viz/DoesholdingZimbabwesZiGpay/DoesholdingZiGpay) · [Power BI report pages](#power-bi-report) · [Code and SQL](#what-is-in-this-repository) · [Business Requirements Document](docs/BRD.md)
 
 **The question:** if a Zimbabwean treasurer or pension fund keeps money in ZiG, Zimbabwe's gold-backed currency, rather than in US dollars, do they come out ahead once inflation and exchange-rate moves are counted?
 
@@ -41,7 +41,7 @@ Open `ZiG Returns.pbip` in Power BI Desktop to explore it (see Reproduce, step 6
 | Path | What it is |
 | --- | --- |
 | `ZiG Returns.pbip`, `ZiG Returns.Report/`, `ZiG Returns.SemanticModel/` | Power BI report saved as a Power BI project: the model in TMDL and the report in PBIR, so every measure and visual is readable text. 5 pages: Summary, FX and value, Versus USD, Break-even, Risk |
-| `tableau/ZiG Returns.twb` | Tableau workbook: 9 sheets, a dashboard and a 5-point story |
+| `tableau/ZiG Returns.twb` | Tableau workbook: 9 sheets, a dashboard and a 5-point story ([published on Tableau Public](https://public.tableau.com/app/profile/nelson.mwerenga7376/viz/DoesholdingZimbabwesZiGpay/DoesholdingZiGpay)) |
 | `data/` | The 9 CSV files both BI tools read |
 | `results/` | Analysis result tables (returns, sub-period spreads, scenarios, rolling windows, findings) |
 | `clean/` | Cleaned source data: RBZ daily rates, IMF rates, RBZ deposit rates, ZIMSTAT CPI, FRED benchmarks, RBZ events, plus reconciliation files |
