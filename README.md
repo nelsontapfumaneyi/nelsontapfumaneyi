@@ -1,5 +1,11 @@
 # Does holding Zimbabwe's ZiG pay? Returns in US-dollar terms, April 2024 – September 2026
 
+**Short answer:** not since launch. US$100 placed in ZiG cash on 8 April 2024 was worth about US$51 by September 2026. Since January 2025, though, ZiG term deposits at the top quoted rate have beaten the US Treasury bill; savings accounts have not.
+
+![US$100 placed in ZiG cash at launch was worth about US$51 by September 2026](docs/img/fig1-usd-value-by-product.png)
+
+**Explore:** [Full research report](docs/research-report.md) · [Tableau workbook](tableau/ZiG%20Returns.twb) · [Power BI report pages](#power-bi-report) · [Code and SQL](#what-is-in-this-repository) · [Business Requirements Document](docs/BRD.md)
+
 **The question:** if a Zimbabwean treasurer or pension fund keeps money in ZiG, Zimbabwe's gold-backed currency, rather than in US dollars, do they come out ahead once inflation and exchange-rate moves are counted?
 
 **Why it matters:** on 12 November 2026 the central bank (RBZ) said it wants to build a short-term ZiG "yield curve", meaning a set of interest rates for different terms, so that people save in ZiG and not only spend it. Savers will do that only if ZiG earns more than US dollars. This project measures whether it has.
@@ -9,7 +15,26 @@
 2. **Since January 2025, ZiG term deposits at the top quoted rate have beaten the US Treasury bill; savings accounts have not.** The top-rate 3-month index gained **+16.1%** in US-dollar terms over 21 months (+14.8% with locked 3-month terms). In 2026 it beat the Treasury bill by **4.4 points a year** (3.6 with locked terms), while ZiG savings trailed it by **3.6 points**.
 3. **Converting US dollars into ZiG for short holds does not clear the hurdle at today's rates.** Someone who already earns ZiG needs about **7.0%** a year (effective) to match the Treasury bill. Someone who converts US dollars in and back out pays a 4.9% round trip, so needs **12.4%** for a one-year hold and **30.6%** for three months. The top 3-month rate, 13.9% quoted (14.6% effective), clears the one-year hurdle but not the shorter ones.
 
-Full write-up: [Research report](docs/research-report.md) (questions, data, method, four findings with charts, implications, limitations, sources) and the [Business Requirements Document](docs/BRD.md) (requirements, KPI definitions, data lineage, risks, recommendations, acceptance criteria).
+## Built with
+- **Data collection and cleaning:** Python (pandas, pdfplumber, openpyxl). 593 RBZ daily rate PDFs, 78 ZIMSTAT CPI reports, IMF and FRED series; every rejected row is logged with its reason.
+- **Database:** PostgreSQL 18. Star schema with temporal keys and CHECK constraints; 34 validation queries and 6 negative tests, all passing.
+- **Analytics:** Python (numpy). Daily return engine, interest-versus-currency log bridge, break-even yield model, 10,000-path Monte Carlo and rolling-window loss analysis.
+- **Business intelligence:** Power BI (TMDL model, DAX measures, 5 report pages) and Tableau (9 sheets, a dashboard and a story).
+- **Assurance:** 30 of 30 headline values tie out between the dashboards and the result tables.
+
+## Power BI report
+
+The report has five pages, each titled with its finding:
+
+| Page | What it shows |
+| --- | --- |
+| Summary | Eight headline KPIs and every finding with its confidence |
+| FX and value | The RBZ official rate and the US$ value of 100 placed in each product |
+| Versus USD | Annualised gap to the US T-bill by period |
+| Break-even | The ZiG yield needed to match the T-bill, against effective rates on offer |
+| Risk | How often 90-day holdings lost US-dollar value |
+
+Open `ZiG Returns.pbip` in Power BI Desktop to explore it (see Reproduce, step 6).
 
 ## What is in this repository
 
@@ -63,6 +88,6 @@ Run from the repository root, which serves as the run folder (`raw/`, `clean/`, 
 - The RBZ's new 90-day ZiG bill has been running for only four months.
 - Next steps: add the RBZ's later bill auction results and bank-level deposit rates, and refresh monthly.
 
-**Revision, 14 Nov 2026:** after an external review, the break-even formula was corrected (hurdles rose by 0.07 to 0.09 points), the stress test is now stated as a shortfall in ending wealth, and several labels were qualified. Details are in the [report's revision note](docs/research-report.md#revision-note-14-november-2026).
+**Revision, 14 Nov 2026:** after a review of the published work, the break-even formula was corrected (hurdles rose by 0.07 to 0.09 points), the stress test is now stated as a shortfall in ending wealth, and several labels were qualified. Details are in the [report's revision note](docs/research-report.md#revision-note-14-november-2026).
 
 All figures are analysis, not investment advice.
