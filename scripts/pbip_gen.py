@@ -7,7 +7,7 @@ page schema 2.1.0, TMDL compatibilityLevel 1606. CRLF line endings, tabs in TMDL
 import json, os, sys, uuid, hashlib
 
 OUT = sys.argv[1]
-DATA = sys.argv[2]  # e.g. C:\Users\nelso\Documents\UMFDOP\zig-returns-2026-11-13\data\
+DATA = sys.argv[2]  # e.g. C:\path\to\zig-returns\data\
 SM = os.path.join(OUT, "ZiG Returns.SemanticModel", "definition")
 RP = os.path.join(OUT, "ZiG Returns.Report", "definition")
 

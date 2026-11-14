@@ -30,7 +30,7 @@
       <connection class='federated'>
         <named-connections>
           <named-connection caption='findings' name='textscan.findings'>
-            <connection class='textscan' directory='C:/Users/nelso/Documents/UMFDOP/zig-returns-2026-11-13/data' filename='findings.csv' password='' server='' />
+            <connection class='textscan' directory='C:/path/to/zig-returns/data' filename='findings.csv' password='' server='' />
           </named-connection>
         </named-connections>
         <relation connection='textscan.findings' name='findings.csv' table='[findings#csv]' type='table'>
@@ -192,7 +192,7 @@
       <connection class='federated'>
         <named-connections>
           <named-connection caption='fx_daily' name='textscan.fx_daily'>
-            <connection class='textscan' directory='C:/Users/nelso/Documents/UMFDOP/zig-returns-2026-11-13/data' filename='fx_daily.csv' password='' server='' />
+            <connection class='textscan' directory='C:/path/to/zig-returns/data' filename='fx_daily.csv' password='' server='' />
           </named-connection>
         </named-connections>
         <relation connection='textscan.fx_daily' name='fx_daily.csv' table='[fx_daily#csv]' type='table'>
@@ -303,7 +303,7 @@
       <connection class='federated'>
         <named-connections>
           <named-connection caption='returns_monthly' name='textscan.returns_monthly'>
-            <connection class='textscan' directory='C:/Users/nelso/Documents/UMFDOP/zig-returns-2026-11-13/data' filename='returns_monthly.csv' password='' server='' />
+            <connection class='textscan' directory='C:/path/to/zig-returns/data' filename='returns_monthly.csv' password='' server='' />
           </named-connection>
         </named-connections>
         <relation connection='textscan.returns_monthly' name='returns_monthly.csv' table='[returns_monthly#csv]' type='table'>
@@ -580,7 +580,7 @@
       <connection class='federated'>
         <named-connections>
           <named-connection caption='subperiods' name='textscan.subperiods'>
-            <connection class='textscan' directory='C:/Users/nelso/Documents/UMFDOP/zig-returns-2026-11-13/data' filename='subperiods.csv' password='' server='' />
+            <connection class='textscan' directory='C:/path/to/zig-returns/data' filename='subperiods.csv' password='' server='' />
           </named-connection>
         </named-connections>
         <relation connection='textscan.subperiods' name='subperiods.csv' table='[subperiods#csv]' type='table'>
@@ -854,7 +854,7 @@
       <connection class='federated'>
         <named-connections>
           <named-connection caption='scenarios' name='textscan.scenarios'>
-            <connection class='textscan' directory='C:/Users/nelso/Documents/UMFDOP/zig-returns-2026-11-13/data' filename='scenarios.csv' password='' server='' />
+            <connection class='textscan' directory='C:/path/to/zig-returns/data' filename='scenarios.csv' password='' server='' />
           </named-connection>
         </named-connections>
         <relation connection='textscan.scenarios' name='scenarios.csv' table='[scenarios#csv]' type='table'>
@@ -1112,7 +1112,7 @@
       <connection class='federated'>
         <named-connections>
           <named-connection caption='rolling' name='textscan.rolling'>
-            <connection class='textscan' directory='C:/Users/nelso/Documents/UMFDOP/zig-returns-2026-11-13/data' filename='rolling.csv' password='' server='' />
+            <connection class='textscan' directory='C:/path/to/zig-returns/data' filename='rolling.csv' password='' server='' />
           </named-connection>
         </named-connections>
         <relation connection='textscan.rolling' name='rolling.csv' table='[rolling#csv]' type='table'>
